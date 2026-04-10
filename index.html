@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,550 +7,548 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
-:root {
-–bg: #0d0f12;
-–surface: #14181f;
-–surface2: #1c2230;
-–border: #252d3d;
-–border2: #2e3a52;
-–accent: #4f8ef7;
-–accent2: #7eb8ff;
-–green: #3ecf8e;
-–yellow: #f5c842;
-–red: #f56565;
-–text: #e2e8f0;
-–text2: #8899aa;
-–text3: #4a5568;
-–mono: ‘IBM Plex Mono’, monospace;
-–sans: ‘IBM Plex Sans’, sans-serif;
-}
-
-- { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-font-family: var(–sans);
-background: var(–bg);
-color: var(–text);
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-}
-
-/* ── Login screen ─────────────────────────────────────────────────────────── */
-#login-screen {
-display: flex;
-align-items: center;
-justify-content: center;
-min-height: 100vh;
-background: var(–bg);
-}
-
-.login-box {
-width: 380px;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 12px;
-overflow: hidden;
-}
-
-.login-header {
-padding: 28px 28px 20px;
-border-bottom: 1px solid var(–border);
-}
-
-.login-logo {
-display: flex;
-align-items: center;
-gap: 10px;
-font-family: var(–mono);
-font-size: 13px;
-font-weight: 600;
-letter-spacing: 0.06em;
-color: var(–accent2);
-margin-bottom: 8px;
-}
-
-.login-logo-dot {
-width: 8px; height: 8px;
-border-radius: 50%;
-background: var(–accent);
-box-shadow: 0 0 8px var(–accent);
-animation: pulse 2s infinite;
-}
-
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-.login-sub {
-font-size: 12px;
-color: var(–text3);
-font-family: var(–mono);
-}
-
-.login-body { padding: 24px 28px; }
-
-.login-field { margin-bottom: 14px; }
-
-.login-label {
-display: block;
-font-family: var(–mono);
-font-size: 10px;
-color: var(–text3);
-text-transform: uppercase;
-letter-spacing: 0.07em;
-margin-bottom: 6px;
-}
-
-.login-input {
-width: 100%;
-background: var(–bg);
-border: 1px solid var(–border2);
-border-radius: 6px;
-color: var(–text);
-font-family: var(–mono);
-font-size: 12px;
-padding: 9px 12px;
-outline: none;
-transition: border-color 0.15s;
-}
-
-.login-input:focus { border-color: var(–accent); }
-
-.login-hint {
-font-family: var(–mono);
-font-size: 10px;
-color: var(–text3);
-margin-top: 5px;
-}
-
-.login-btn {
-width: 100%;
-padding: 10px;
-background: var(–accent);
-border: none;
-border-radius: 6px;
-color: #fff;
-font-family: var(–mono);
-font-size: 12px;
-font-weight: 600;
-cursor: pointer;
-transition: background 0.15s;
-margin-top: 6px;
-}
-
-.login-btn:hover { background: var(–accent2); color: #000; }
-
-.login-error {
-background: rgba(245,101,101,0.08);
-border: 1px solid rgba(245,101,101,0.25);
-border-radius: 6px;
-padding: 9px 12px;
-font-family: var(–mono);
-font-size: 11px;
-color: var(–red);
-margin-bottom: 14px;
-display: none;
-}
-
-/* ── App shell (hidden until authed) ─────────────────────────────────────── */
-#app-shell { display: none; flex-direction: column; height: 100vh; }
-
-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 14px 24px;
-border-bottom: 1px solid var(–border);
-background: var(–surface);
-position: sticky;
-top: 0;
-z-index: 100;
-flex-shrink: 0;
-}
-
-.logo {
-display: flex;
-align-items: center;
-gap: 10px;
-font-family: var(–mono);
-font-size: 13px;
-font-weight: 600;
-letter-spacing: 0.05em;
-color: var(–accent2);
-}
-
-.logo-dot {
-width: 8px; height: 8px;
-border-radius: 50%;
-background: var(–green);
-box-shadow: 0 0 8px var(–green);
-animation: pulse 2s infinite;
-}
-
-.header-meta { font-family: var(–mono); font-size: 11px; color: var(–text3); display: flex; align-items: center; gap: 12px; }
-.header-meta span { color: var(–text2); }
-
-.app {
-display: grid;
-grid-template-columns: 220px 1fr;
-flex: 1;
-min-height: 0;
-overflow: hidden;
-}
-
-aside {
-border-right: 1px solid var(–border);
-background: var(–surface);
-padding: 16px 0;
-overflow-y: auto;
-}
-
-.nav-section { padding: 0 16px; margin-bottom: 20px; }
-
-.nav-label {
-font-family: var(–mono);
-font-size: 10px;
-font-weight: 600;
-letter-spacing: 0.1em;
-color: var(–text3);
-text-transform: uppercase;
-padding: 0 0 8px 0;
-border-bottom: 1px solid var(–border);
-margin-bottom: 8px;
-}
-
-.nav-item {
-display: flex;
-align-items: center;
-gap: 8px;
-padding: 8px 10px;
-border-radius: 6px;
-cursor: pointer;
-font-size: 13px;
-color: var(–text2);
-transition: all 0.15s;
-border: none;
-background: none;
-width: 100%;
-text-align: left;
-}
-
-.nav-item:hover { background: var(–surface2); color: var(–text); }
-.nav-item.active { background: rgba(79,142,247,0.12); color: var(–accent2); border-left: 2px solid var(–accent); padding-left: 8px; }
-.nav-icon { font-size: 14px; width: 18px; text-align: center; }
-
-main { display: flex; flex-direction: column; overflow: hidden; }
-
-.toolbar {
-display: flex;
-align-items: center;
-gap: 10px;
-padding: 12px 20px;
-border-bottom: 1px solid var(–border);
-background: var(–surface);
-flex-shrink: 0;
-}
-
-.toolbar-title { font-family: var(–mono); font-size: 12px; font-weight: 600; color: var(–accent2); flex: 1; }
-
-.btn {
-padding: 6px 14px;
-border-radius: 6px;
-border: 1px solid var(–border2);
-background: var(–surface2);
-color: var(–text);
-font-family: var(–mono);
-font-size: 11px;
-cursor: pointer;
-transition: all 0.15s;
-display: inline-flex;
-align-items: center;
-gap: 6px;
-}
-
-.btn:hover { border-color: var(–accent); color: var(–accent2); }
-.btn.primary { background: var(–accent); border-color: var(–accent); color: #fff; }
-.btn.primary:hover { background: var(–accent2); border-color: var(–accent2); color: #000; }
-.btn.danger { border-color: rgba(245,101,101,0.4); color: var(–red); }
-.btn.danger:hover { background: rgba(245,101,101,0.1); }
-
-.content { flex: 1; overflow: auto; padding: 20px; }
-
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-
-.card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 8px;
-padding: 16px;
-cursor: pointer;
-transition: all 0.2s;
-position: relative;
-overflow: hidden;
-}
-
-.card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-background: linear-gradient(90deg, var(–accent), var(–green));
-opacity: 0;
-transition: opacity 0.2s;
-}
-
-.card:hover { border-color: var(–border2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-.card:hover::before { opacity: 1; }
-
-.card-title { font-size: 13px; font-weight: 600; color: var(–text); margin-bottom: 4px; }
-.card-sub { font-family: var(–mono); font-size: 10px; color: var(–text3); margin-bottom: 10px; word-break: break-all; }
-.card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
-
-.badge {
-font-family: var(–mono);
-font-size: 10px;
-padding: 2px 7px;
-border-radius: 4px;
-background: var(–surface2);
-border: 1px solid var(–border);
-color: var(–text2);
-}
-
-.badge.green { border-color: rgba(62,207,142,0.3); color: var(–green); background: rgba(62,207,142,0.06); }
-.badge.blue { border-color: rgba(79,142,247,0.3); color: var(–accent2); background: rgba(79,142,247,0.06); }
-.badge.yellow { border-color: rgba(245,200,66,0.3); color: var(–yellow); background: rgba(245,200,66,0.06); }
-
-.detail-panel { background: var(–surface); border: 1px solid var(–border); border-radius: 8px; overflow: hidden; }
-
-.detail-header {
-padding: 14px 18px;
-border-bottom: 1px solid var(–border);
-display: flex;
-align-items: center;
-justify-content: space-between;
-}
-
-.detail-title { font-weight: 600; font-size: 14px; }
-.detail-body { padding: 18px; }
-
-.json-viewer {
-background: var(–bg);
-border: 1px solid var(–border);
-border-radius: 6px;
-padding: 16px;
-font-family: var(–mono);
-font-size: 11.5px;
-line-height: 1.7;
-overflow: auto;
-max-height: 600px;
-white-space: pre-wrap;
-word-break: break-all;
-color: var(–text2);
-}
-
-.json-viewer .key { color: var(–accent2); }
-.json-viewer .str { color: var(–green); }
-.json-viewer .num { color: var(–yellow); }
-.json-viewer .bool { color: #f7a35c; }
-.json-viewer .null { color: var(–red); }
-
-.yaml-viewer {
-background: var(–bg);
-border: 1px solid var(–border);
-border-radius: 6px;
-padding: 16px;
-font-family: var(–mono);
-font-size: 11.5px;
-line-height: 1.7;
-overflow: auto;
-max-height: 70vh;
-white-space: pre;
-color: var(–text2);
-}
-
-.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-
-.data-table th {
-text-align: left;
-padding: 8px 12px;
-font-family: var(–mono);
-font-size: 10px;
-font-weight: 600;
-letter-spacing: 0.08em;
-color: var(–text3);
-text-transform: uppercase;
-border-bottom: 1px solid var(–border);
-background: var(–bg);
-}
-
-.data-table td {
-padding: 10px 12px;
-border-bottom: 1px solid var(–border);
-font-size: 12px;
-color: var(–text2);
-vertical-align: top;
-}
-
-.data-table tr:hover td { background: var(–surface2); color: var(–text); }
-.data-table .mono { font-family: var(–mono); font-size: 11px; color: var(–text3); }
-
-.state-box {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-padding: 60px 20px;
-color: var(–text3);
-font-family: var(–mono);
-font-size: 12px;
-gap: 12px;
-}
-
-.state-icon { font-size: 32px; }
-
-.spinner {
-width: 20px; height: 20px;
-border: 2px solid var(–border);
-border-top-color: var(–accent);
-border-radius: 50%;
-animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.error-box {
-background: rgba(245,101,101,0.07);
-border: 1px solid rgba(245,101,101,0.25);
-border-radius: 6px;
-padding: 12px 16px;
-font-family: var(–mono);
-font-size: 12px;
-color: var(–red);
-line-height: 1.6;
-}
-
-.tabs { display: flex; border-bottom: 1px solid var(–border); margin-bottom: 16px; overflow-x: auto; }
-
-.tab {
-padding: 8px 16px;
-font-family: var(–mono);
-font-size: 11px;
-cursor: pointer;
-color: var(–text3);
-border-bottom: 2px solid transparent;
-transition: all 0.15s;
-border: none;
-background: none;
-white-space: nowrap;
-flex-shrink: 0;
-}
-
-.tab:hover { color: var(–text2); }
-.tab.active { color: var(–accent2); border-bottom: 2px solid var(–accent); }
-
-.input {
-background: var(–bg);
-border: 1px solid var(–border2);
-border-radius: 6px;
-color: var(–text);
-font-family: var(–mono);
-font-size: 12px;
-padding: 8px 12px;
-outline: none;
-transition: border-color 0.15s;
-width: 100%;
-}
-
-.input:focus { border-color: var(–accent); }
-
-.select {
-background: var(–bg);
-border: 1px solid var(–border2);
-border-radius: 6px;
-color: var(–text);
-font-family: var(–mono);
-font-size: 12px;
-padding: 8px 12px;
-outline: none;
-cursor: pointer;
-width: 100%;
-}
-
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-family: var(–mono); font-size: 10px; color: var(–text3); letter-spacing: 0.06em; text-transform: uppercase; }
-
-.back-btn {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-font-family: var(–mono);
-font-size: 11px;
-color: var(–text3);
-cursor: pointer;
-border: none;
-background: none;
-padding: 0;
-margin-bottom: 16px;
-}
-
-.back-btn:hover { color: var(–accent2); }
-
-.copy-btn {
-font-family: var(–mono);
-font-size: 10px;
-padding: 4px 10px;
-border-radius: 4px;
-border: 1px solid var(–border);
-background: var(–surface2);
-color: var(–text3);
-cursor: pointer;
-transition: all 0.15s;
-}
-
-.copy-btn:hover { color: var(–text); border-color: var(–border2); }
-
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-
-.section-title {
-font-family: var(–mono);
-font-size: 11px;
-font-weight: 600;
-color: var(–text3);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-}
-
-.count-badge {
-font-family: var(–mono);
-font-size: 10px;
-padding: 2px 8px;
-border-radius: 10px;
-background: var(–surface2);
-color: var(–text3);
-border: 1px solid var(–border);
-}
-
-.divider { height: 1px; background: var(–border); margin: 16px 0; }
-
-.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 16px; }
-
-.info-cell { background: var(–bg); border: 1px solid var(–border); border-radius: 6px; padding: 12px 14px; }
-.info-cell-label { font-family: var(–mono); font-size: 10px; color: var(–text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-.info-cell-value { font-size: 13px; font-weight: 500; color: var(–text); word-break: break-all; }
-.info-cell-value.mono { font-family: var(–mono); font-size: 11px; color: var(–accent2); }
-
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(–border2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(–text3); }
+  :root {
+    --bg: #0d0f12;
+    --surface: #14181f;
+    --surface2: #1c2230;
+    --border: #252d3d;
+    --border2: #2e3a52;
+    --accent: #4f8ef7;
+    --accent2: #7eb8ff;
+    --green: #3ecf8e;
+    --yellow: #f5c842;
+    --red: #f56565;
+    --text: #e2e8f0;
+    --text2: #8899aa;
+    --text3: #4a5568;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Login screen ─────────────────────────────────────────────────────────── */
+  #login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--bg);
+  }
+
+  .login-box {
+    width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .login-header {
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .login-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+
+  .login-logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .login-sub {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  .login-body { padding: 24px 28px; }
+
+  .login-field { margin-bottom: 14px; }
+
+  .login-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 6px;
+  }
+
+  .login-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .login-input:focus { border-color: var(--accent); }
+
+  .login-hint {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 5px;
+  }
+
+  .login-btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 6px;
+  }
+
+  .login-btn:hover { background: var(--accent2); color: #000; }
+
+  .login-error {
+    background: rgba(245,101,101,0.08);
+    border: 1px solid rgba(245,101,101,0.25);
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+    margin-bottom: 14px;
+    display: none;
+  }
+
+  /* ── App shell (hidden until authed) ─────────────────────────────────────── */
+  #app-shell { display: none; flex-direction: column; height: 100vh; }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    flex-shrink: 0;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--accent2);
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  .header-meta { font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 12px; }
+  .header-meta span { color: var(--text2); }
+
+  .app {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  aside {
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    padding: 16px 0;
+    overflow-y: auto;
+  }
+
+  .nav-section { padding: 0 16px; margin-bottom: 20px; }
+
+  .nav-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    text-transform: uppercase;
+    padding: 0 0 8px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text2);
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: rgba(79,142,247,0.12); color: var(--accent2); border-left: 2px solid var(--accent); padding-left: 8px; }
+  .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+  main { display: flex; flex-direction: column; overflow: hidden; }
+
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+
+  .toolbar-title { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--accent2); flex: 1; }
+
+  .btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: var(--accent2); border-color: var(--accent2); color: #000; }
+  .btn.danger { border-color: rgba(245,101,101,0.4); color: var(--red); }
+  .btn.danger:hover { background: rgba(245,101,101,0.1); }
+
+  .content { flex: 1; overflow: auto; padding: 20px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .card:hover::before { opacity: 1; }
+
+  .card-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .card-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 10px; word-break: break-all; }
+  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  .badge.green { border-color: rgba(62,207,142,0.3); color: var(--green); background: rgba(62,207,142,0.06); }
+  .badge.blue { border-color: rgba(79,142,247,0.3); color: var(--accent2); background: rgba(79,142,247,0.06); }
+  .badge.yellow { border-color: rgba(245,200,66,0.3); color: var(--yellow); background: rgba(245,200,66,0.06); }
+
+  .detail-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+
+  .detail-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .detail-title { font-weight: 600; font-size: 14px; }
+  .detail-body { padding: 18px; }
+
+  .json-viewer {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.7;
+    overflow: auto;
+    max-height: 600px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: var(--text2);
+  }
+
+  .json-viewer .key { color: var(--accent2); }
+  .json-viewer .str { color: var(--green); }
+  .json-viewer .num { color: var(--yellow); }
+  .json-viewer .bool { color: #f7a35c; }
+  .json-viewer .null { color: var(--red); }
+
+  .yaml-viewer {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.7;
+    overflow: auto;
+    max-height: 70vh;
+    white-space: pre;
+    color: var(--text2);
+  }
+
+  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+
+  .data-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text2);
+    vertical-align: top;
+  }
+
+  .data-table tr:hover td { background: var(--surface2); color: var(--text); }
+  .data-table .mono { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+
+  .state-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: var(--text3);
+    font-family: var(--mono);
+    font-size: 12px;
+    gap: 12px;
+  }
+
+  .state-icon { font-size: 32px; }
+
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-box {
+    background: rgba(245,101,101,0.07);
+    border: 1px solid rgba(245,101,101,0.25);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--red);
+    line-height: 1.6;
+  }
+
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 16px; overflow-x: auto; }
+
+  .tab {
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    color: var(--text3);
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tab:hover { color: var(--text2); }
+  .tab.active { color: var(--accent2); border-bottom: 2px solid var(--accent); }
+
+  .input {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+  }
+
+  .input:focus { border-color: var(--accent); }
+
+  .select {
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 8px 12px;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    margin-bottom: 16px;
+  }
+
+  .back-btn:hover { color: var(--accent2); }
+
+  .copy-btn {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover { color: var(--text); border-color: var(--border2); }
+
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .count-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--surface2);
+    color: var(--text3);
+    border: 1px solid var(--border);
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 16px; }
+
+  .info-cell { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .info-cell-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .info-cell-value { font-size: 13px; font-weight: 500; color: var(--text); word-break: break-all; }
+  .info-cell-value.mono { font-family: var(--mono); font-size: 11px; color: var(--accent2); }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 </style>
-
 </head>
 <body>
 
 <!-- ── LOGIN SCREEN ─────────────────────────────────────────────────────────── -->
-
-<div id="login-screen" style="display:flex;">
+<div id="login-screen">
   <div class="login-box">
     <div class="login-header">
       <div class="login-logo">
@@ -581,8 +578,7 @@ border: 1px solid var(–border);
 </div>
 
 <!-- ── APP SHELL ────────────────────────────────────────────────────────────── -->
-
-<div id="app-shell" style="display:none;">
+<div id="app-shell">
   <header>
     <div class="logo">
       <div class="logo-dot"></div>
@@ -613,9 +609,6 @@ border: 1px solid var(–border);
         <button class="nav-item" onclick="navigate('documents')" id="nav-documents">
           <span class="nav-icon">▤</span> Documents
         </button>
-        <button class="nav-item" onclick="navigate('inspect')" id="nav-inspect">
-          <span class="nav-icon">🔍</span> Workbook Inspector
-        </button>
         <button class="nav-item" onclick="navigate('export')" id="nav-export">
           <span class="nav-icon">↗</span> Export Dashboard
         </button>
@@ -634,18 +627,15 @@ border: 1px solid var(–border);
       </div>
     </aside>
 
-```
-<main>
-  <div class="toolbar">
-    <span class="toolbar-title" id="toolbar-title">MODELS</span>
-    <button class="btn" onclick="refreshCurrent()">↺ Refresh</button>
-  </div>
-  <div class="content" id="content">
-    <div class="state-box"><div class="spinner"></div><div>Loading...</div></div>
-  </div>
-</main>
-```
-
+    <main>
+      <div class="toolbar">
+        <span class="toolbar-title" id="toolbar-title">MODELS</span>
+        <button class="btn" onclick="refreshCurrent()">↺ Refresh</button>
+      </div>
+      <div class="content" id="content">
+        <div class="state-box"><div class="spinner"></div><div>Loading...</div></div>
+      </div>
+    </main>
   </div>
 </div>
 
@@ -657,13 +647,10 @@ let currentView = 'models';
 let state = { models: null, selectedModel: null, documents: null };
 
 async function doLogin() {
-  console.log('doLogin called');
   const workerUrl = document.getElementById('worker-url').value.trim().replace(/\/$/, '');
   const secret = document.getElementById('app-secret').value.trim();
   const errEl = document.getElementById('login-error');
-  const btn = document.querySelector('.login-btn');
   errEl.style.display = 'none';
-  console.log('workerUrl:', workerUrl, 'secret length:', secret.length);
 
   if (!workerUrl || !secret) {
     errEl.textContent = 'Both fields are required.';
@@ -671,45 +658,33 @@ async function doLogin() {
     return;
   }
 
-  btn.textContent = 'Connecting...';
-  btn.disabled = true;
-  console.log('Fetching worker...');
-
   // Test the connection
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(workerUrl + '/api/v1/models?pageSize=1', {
       headers: { 'X-App-Secret': secret },
-      signal: controller.signal
+      signal: AbortSignal.timeout(8000)
     });
-    clearTimeout(timer);
     if (res.status === 401) {
       errEl.textContent = '⚠ Wrong App Secret — check your Cloudflare Worker environment variable.';
       errEl.style.display = 'block';
-      btn.textContent = 'Connect →'; btn.disabled = false;
       return;
     }
     if (!res.ok && res.status !== 400) {
       errEl.textContent = `⚠ Worker responded with ${res.status}. Check the Worker URL.`;
       errEl.style.display = 'block';
-      btn.textContent = 'Connect →'; btn.disabled = false;
       return;
     }
   } catch(e) {
     errEl.textContent = `⚠ Could not reach Worker: ${e.message}`;
     errEl.style.display = 'block';
-    btn.textContent = 'Connect →'; btn.disabled = false;
     return;
   }
 
   WORKER_URL = workerUrl;
   APP_SECRET = secret;
 
-  const loginScreen = document.getElementById('login-screen');
-  const appShell = document.getElementById('app-shell');
-  loginScreen.style.cssText = 'display:none';
-  appShell.style.cssText = 'display:flex;flex-direction:column;height:100vh;';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-shell').style.display = 'flex';
   document.getElementById('worker-url-display').textContent = workerUrl.replace('https://', '');
 
   await renderModels(document.getElementById('content'));
@@ -756,8 +731,8 @@ function navigate(view) {
   if (nav) nav.classList.add('active');
   const titles = {
     models: 'MODELS', yaml: 'MODEL YAML', topics: 'TOPICS',
-    documents: 'DOCUMENTS', inspect: 'WORKBOOK INSPECTOR',
-    export: 'EXPORT DASHBOARD', query: 'RUN QUERY', connections: 'CONNECTIONS'
+    documents: 'DOCUMENTS', export: 'EXPORT DASHBOARD',
+    query: 'RUN QUERY', connections: 'CONNECTIONS'
   };
   document.getElementById('toolbar-title').textContent = titles[view] || view.toUpperCase();
   renderView(view);
@@ -772,7 +747,6 @@ async function renderView(view) {
     case 'yaml':        await renderYaml(c); break;
     case 'topics':      await renderTopics(c); break;
     case 'documents':   await renderDocuments(c); break;
-    case 'inspect':     renderInspect(c); break;
     case 'export':      renderExport(c); break;
     case 'query':       renderQuery(c); break;
     case 'connections': await renderConnections(c); break;
@@ -1011,7 +985,7 @@ function showTopicDetail(i) {
     <div class="detail-panel">
       <div class="detail-header">
         <span class="detail-title">${esc(d.label || d.name || t.name)}</span>
-        <button class="copy-btn" onclick="copyTopicJson(${i})">Copy JSON</button>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText(JSON.stringify(window._topics[${i}].data,null,2))">Copy JSON</button>
       </div>
       <div class="detail-body">
         <div class="info-grid" style="margin-bottom:16px;">
@@ -1053,302 +1027,11 @@ async function renderDocuments(c) {
             <td>${d.hasDashboard ? '<span class="badge green">yes</span>' : '<span class="badge">no</span>'}</td>
             <td class="mono" style="font-size:10px">${esc(d.identifier || '—')}</td>
             <td style="color:var(--text3);font-size:11px">${d.updatedAt ? new Date(d.updatedAt).toLocaleDateString() : '—'}</td>
-            <td>${d.hasDashboard ? `<button class="btn" onclick="goInspect('${esc(d.identifier)}')">Inspect</button>` : ''} ${d.hasDashboard ? `<button class="btn" onclick="goExport('${esc(d.identifier)}')">Export</button>` : ''}</td>
+            <td>${d.hasDashboard ? `<button class="btn" onclick="goExport('${esc(d.identifier)}')">Export</button>` : ''}</td>
           </tr>`).join('')}
         </tbody>
       </table>`;
   } catch(e) { c.innerHTML = apiError(e); }
-}
-
-// ─── WORKBOOK INSPECTOR ───────────────────────────────────────────────────────
-function renderInspect(c) {
-  window._inspectDocs = state.documents || [];
-  const hasOptions = window._inspectDocs.length > 0;
-
-  c.innerHTML = `
-    <div style="max-width:780px;">
-      <div class="detail-panel" style="margin-bottom:16px;">
-        <div class="detail-header"><span class="detail-title">Workbook Inspector</span></div>
-        <div class="detail-body">
-          ${!hasOptions ? `<p style="font-size:12px;color:var(--text3);margin-bottom:14px;">Tip: load <a href="#" onclick="navigate('documents')" style="color:var(--accent2)">Documents</a> first to pick from a list.</p>` : ''}
-          <div class="form-group" style="margin-bottom:12px;">
-            <label class="form-label">Document Identifier</label>
-            <input class="input" id="inspect-doc-id" placeholder="Paste document identifier..." />
-          </div>
-          ${hasOptions ? `
-            <div class="form-group" style="margin-bottom:14px;">
-              <label class="form-label">Or pick from documents</label>
-              <select class="select" id="inspect-doc-select" onchange="inspectSelectChanged(this)">
-                <option value="">— select a document —</option>
-                ${window._inspectDocs.map((d,i) => `<option value="${i}">${esc(d.name || 'Untitled')}${d.identifier ? ' (' + esc(d.identifier) + ')' : ''}</option>`).join('')}
-              </select>
-            </div>` : ''}
-          <button class="btn primary" onclick="runInspect()">🔍 Inspect</button>
-        </div>
-      </div>
-      <div id="inspect-output"></div>
-    </div>`;
-}
-
-function inspectSelectChanged(sel) {
-  const idx = sel.value;
-  if (idx === '') return;
-  const doc = window._inspectDocs[parseInt(idx)];
-  if (doc?.identifier) document.getElementById('inspect-doc-id').value = doc.identifier;
-}
-
-function goInspect(identifier) {
-  navigate('inspect');
-  setTimeout(() => {
-    const el = document.getElementById('inspect-doc-id');
-    if (el) el.value = identifier;
-    const sel = document.getElementById('inspect-doc-select');
-    if (sel && window._inspectDocs) {
-      const idx = window._inspectDocs.findIndex(d => d.identifier === identifier);
-      if (idx >= 0) sel.value = String(idx);
-    }
-  }, 80);
-}
-
-async function runInspect() {
-  const identifier = document.getElementById('inspect-doc-id')?.value?.trim();
-  if (!identifier) { alert('Please enter or select a document identifier first.'); return; }
-  const out = document.getElementById('inspect-output');
-  out.innerHTML = loading('Fetching workbook data...');
-
-  try {
-    // Fire all three endpoints in parallel
-    const [queriesRes, dashRes] = await Promise.allSettled([
-      apiFetch(`/api/v1/documents/${identifier}/queries`),
-      apiFetch(`/api/v1/documents/${identifier}`)
-    ]);
-
-    const queries  = queriesRes.status  === 'fulfilled' ? (queriesRes.value.queries   || []) : [];
-    const dashData = dashRes.status     === 'fulfilled' ? dashRes.value                       : null;
-    const dashErr  = dashRes.status     === 'rejected'  ? dashRes.reason?.message             : null;
-
-    window._inspectQueries  = queries;
-    window._inspectDash     = dashData;
-    window._inspectId       = identifier;
-
-    // Merge queries + queryPresentations for maximum info
-    const presentations = dashData?.queryPresentations || [];
-
-    // Build a merged tile list: use queries as primary, enrich with presentation data
-    const tiles = queries.map(q => {
-      const pres = presentations.find(p =>
-        p.id === q.id ||
-        JSON.stringify(p.query) === JSON.stringify(q.query)
-      );
-      return { ...q, presentation: pres || null };
-    });
-
-    // Also catch any presentation tiles not in queries
-    const queryIds = new Set(queries.map(q => q.id));
-    const extraPres = presentations.filter(p => !queryIds.has(p.id));
-    const extraTiles = extraPres.map(p => ({ id: p.id, name: p.name, query: p.query, presentation: p }));
-    const allTiles = [...tiles, ...extraTiles];
-
-    // Dashboard-level summary
-    const filterFields = dashData?.filterOrder || [];
-    const filterConfig = dashData?.filterConfig || {};
-
-    out.innerHTML = `
-      <!-- Summary bar -->
-      <div class="info-grid" style="margin-bottom:16px;">
-        <div class="info-cell">
-          <div class="info-cell-label">Document</div>
-          <div class="info-cell-value mono">${esc(identifier)}</div>
-        </div>
-        <div class="info-cell">
-          <div class="info-cell-label">Name</div>
-          <div class="info-cell-value">${esc(dashData?.name || '—')}</div>
-        </div>
-        <div class="info-cell">
-          <div class="info-cell-label">Model ID</div>
-          <div class="info-cell-value mono">${esc(dashData?.modelId || '—')}</div>
-        </div>
-        <div class="info-cell">
-          <div class="info-cell-label">Tiles / Queries</div>
-          <div class="info-cell-value">${allTiles.length}</div>
-        </div>
-        <div class="info-cell">
-          <div class="info-cell-label">Dashboard Filters</div>
-          <div class="info-cell-value">${filterFields.length || '—'}</div>
-        </div>
-        <div class="info-cell">
-          <div class="info-cell-label">Refresh Interval</div>
-          <div class="info-cell-value">${dashData?.refreshInterval ? dashData.refreshInterval + 's' : '—'}</div>
-        </div>
-      </div>
-
-      ${dashErr ? `<div class="error-box" style="margin-bottom:14px;">Dashboard config unavailable (workbook-only doc): ${esc(dashErr)}</div>` : ''}
-
-      <!-- Dashboard filters -->
-      ${filterFields.length ? `
-        <div class="section-header"><span class="section-title">Dashboard Filters</span><span class="count-badge">${filterFields.length}</span></div>
-        <table class="data-table" style="margin-bottom:20px;">
-          <thead><tr><th>Field</th><th>Type</th><th>Default Value</th></tr></thead>
-          <tbody>
-            ${filterFields.map(f => {
-              const cfg = filterConfig[f] || {};
-              return `<tr>
-                <td class="mono">${esc(f)}</td>
-                <td>${esc(cfg.type || '—')}</td>
-                <td class="mono">${esc(cfg.defaultValue || '—')}</td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>` : ''}
-
-      <!-- Tiles -->
-      <div class="section-header">
-        <span class="section-title">Tiles / Queries</span>
-        <div style="display:flex;gap:8px;">
-          <span class="count-badge">${allTiles.length} tiles</span>
-          <button class="copy-btn" onclick="copyAllQueries()">Copy All Queries JSON</button>
-        </div>
-      </div>
-
-      ${allTiles.length === 0 ? `<div class="state-box"><div class="state-icon">○</div><div>No queries found</div></div>` : ''}
-
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        ${allTiles.map((tile, i) => {
-          const q = tile.query || {};
-          const pres = tile.presentation;
-          const fields = q.fields || [];
-          const filters = q.filters || {};
-          const filterCount = Object.keys(filters).length;
-          const hasCustomSql = fields.some(f => f.includes('${') || f.startsWith('custom_'));
-
-          return `
-          <div class="detail-panel" id="tile-${i}">
-            <div class="detail-header" style="cursor:pointer;" onclick="toggleTile(${i})">
-              <div style="display:flex;align-items:center;gap:10px;flex:1;">
-                <span style="font-family:var(--mono);font-size:10px;color:var(--text3);min-width:24px;">#${i+1}</span>
-                <span class="detail-title">${esc(tile.name || 'Untitled Tile')}</span>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                  ${pres?.chartType ? `<span class="badge blue">${esc(pres.chartType)}</span>` : ''}
-                  ${fields.length ? `<span class="badge">${fields.length} field${fields.length !== 1 ? 's' : ''}</span>` : ''}
-                  ${filterCount ? `<span class="badge yellow">${filterCount} filter${filterCount !== 1 ? 's' : ''}</span>` : ''}
-                  ${q.table ? `<span class="badge green">topic: ${esc(q.table)}</span>` : ''}
-                </div>
-              </div>
-              <div style="display:flex;gap:6px;">
-                <button class="copy-btn" onclick="event.stopPropagation();copyTileQuery(${i})">Copy Query</button>
-                <button class="btn" onclick="event.stopPropagation();getSql(${i})">Get SQL</button>
-                ${tile.url ? `<a href="${esc(tile.url)}" target="_blank" style="text-decoration:none;"><button class="btn" onclick="event.stopPropagation()">↗ Open</button></a>` : ''}
-              </div>
-            </div>
-            <div class="detail-body" id="tile-body-${i}" style="display:none;">
-
-              <!-- Fields -->
-              ${fields.length ? `
-                <div class="section-title" style="margin-bottom:8px;">Fields (${fields.length})</div>
-                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
-                  ${fields.map(f => `<span class="badge ${f.includes('measure') || f.endsWith('_sum') || f.endsWith('_count') || f.endsWith('_avg') ? 'yellow' : 'blue'}">${esc(f)}</span>`).join('')}
-                </div>` : ''}
-
-              <!-- Filters -->
-              ${filterCount ? `
-                <div class="section-title" style="margin-bottom:8px;">Tile Filters (${filterCount})</div>
-                <table class="data-table" style="margin-bottom:14px;">
-                  <thead><tr><th>Field</th><th>Value</th></tr></thead>
-                  <tbody>
-                    ${Object.entries(filters).map(([k,v]) => `<tr>
-                      <td class="mono">${esc(k)}</td>
-                      <td class="mono">${esc(typeof v === 'object' ? JSON.stringify(v) : String(v))}</td>
-                    </tr>`).join('')}
-                  </tbody>
-                </table>` : ''}
-
-              <!-- Sorts -->
-              ${q.sorts?.length ? `
-                <div class="section-title" style="margin-bottom:8px;">Sorts</div>
-                <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">
-                  ${q.sorts.map(s => `<span class="badge">${esc(s.column_name)} ${s.sort_descending ? '↓' : '↑'}</span>`).join('')}
-                </div>` : ''}
-
-              <!-- Limit -->
-              ${q.limit ? `
-                <div style="margin-bottom:14px;">
-                  <span class="section-title">Limit</span>
-                  <span class="badge" style="margin-left:8px;">${q.limit} rows</span>
-                </div>` : ''}
-
-              <!-- Visualization -->
-              ${pres?.visualization ? `
-                <div class="section-title" style="margin-bottom:8px;">Visualization Config</div>
-                <div class="json-viewer" style="max-height:200px;margin-bottom:14px;">${syntaxHighlight(pres.visualization)}</div>` : ''}
-
-              <!-- SQL output area -->
-              <div id="sql-output-${i}"></div>
-
-              <!-- Raw query JSON -->
-              <div class="section-title" style="margin-bottom:8px;">Raw Query JSON</div>
-              <div class="json-viewer" style="max-height:300px;">${syntaxHighlight(q)}</div>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>`;
-
-    window._allTiles = allTiles;
-
-  } catch(e) { out.innerHTML = apiError(e); }
-}
-
-function toggleTile(i) {
-  const body = document.getElementById(`tile-body-${i}`);
-  if (body) body.style.display = body.style.display === 'none' ? 'block' : 'none';
-}
-
-function copyTileQuery(i) {
-  const tile = window._allTiles?.[i];
-  if (!tile) return;
-  navigator.clipboard.writeText(JSON.stringify(tile.query, null, 2));
-  const panel = document.getElementById(`tile-${i}`);
-  const btn = panel?.querySelector('.copy-btn');
-  if (btn) { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy Query', 1500); }
-}
-
-function copyAllQueries() {
-  if (!window._allTiles) return;
-  const all = window._allTiles.map(t => ({ name: t.name, id: t.id, query: t.query }));
-  navigator.clipboard.writeText(JSON.stringify(all, null, 2));
-}
-
-async function getSql(i) {
-  const tile = window._allTiles?.[i];
-  if (!tile?.query) return;
-  const sqlOut = document.getElementById(`sql-output-${i}`);
-  const tileBody = document.getElementById(`tile-body-${i}`);
-  if (tileBody) tileBody.style.display = 'block';
-  sqlOut.innerHTML = loading('Generating SQL...');
-
-  try {
-    const data = await apiFetch('/api/v1/query/run', {
-      method: 'POST',
-      body: JSON.stringify({ query: tile.query, planOnly: true })
-    });
-
-    // Extract SQL from the plan response
-    const sql = data?.summary?.sql
-      || data?.query?.sql
-      || data?.result
-      || JSON.stringify(data, null, 2);
-
-    sqlOut.innerHTML = `
-      <div class="section-header" style="margin-top:4px;">
-        <span class="section-title">Generated SQL</span>
-        <button class="copy-btn" onclick="copySql(${i})">Copy SQL</button>
-      </div>
-      <div class="yaml-viewer" style="max-height:400px;margin-bottom:14px;">${esc(typeof sql === 'string' ? sql : JSON.stringify(sql, null, 2))}</div>`;
-
-    window._lastSql = window._lastSql || {};
-    window._lastSql[i] = typeof sql === 'string' ? sql : JSON.stringify(sql, null, 2);
-  } catch(e) {
-    sqlOut.innerHTML = `<div class="error-box" style="margin-bottom:14px;">⚠ SQL generation failed: ${esc(e.message)}</div>`;
-  }
 }
 
 // ─── EXPORT ───────────────────────────────────────────────────────────────────
@@ -1470,102 +1153,94 @@ function renderQuery(c) {
         <div class="form-group" style="flex:1;">
           <label class="form-label">Query JSON</label>
           <textarea class="input" id="query-body" style="flex:1;resize:none;height:100%;min-height:300px;font-size:11px;line-height:1.6">${esc(example)}</textarea>
-
-```
-    </div>
-    <button class="btn primary" onclick="runQuery()" style="width:100%">▷ Run Query</button>
-  </div>
-  <div style="display:flex;flex-direction:column;gap:8px;overflow:hidden;">
-    <div class="section-header"><span class="section-title">Results</span></div>
-    <div id="query-output" style="flex:1;overflow:auto;">
-      <div class="state-box"><div class="state-icon">◷</div><div>Run a query to see results</div></div>
-    </div>
-  </div>
-</div>`;
-```
-
+        </div>
+        <button class="btn primary" onclick="runQuery()" style="width:100%">▷ Run Query</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;overflow:hidden;">
+        <div class="section-header"><span class="section-title">Results</span></div>
+        <div id="query-output" style="flex:1;overflow:auto;">
+          <div class="state-box"><div class="state-icon">◷</div><div>Run a query to see results</div></div>
+        </div>
+      </div>
+    </div>`;
 }
 
 async function runQuery() {
-const out = document.getElementById(‘query-output’);
-const bodyText = document.getElementById(‘query-body’).value;
-const format = document.getElementById(‘query-format’).value;
-out.innerHTML = loading();
-try {
-const queryObj = JSON.parse(bodyText);
-const data = await apiFetch(’/api/v1/query/run’, { method: ‘POST’, body: JSON.stringify({ query: queryObj, resultType: format }) });
-if (format === ‘csv’ && data.result) {
-try { out.innerHTML = `<pre class="yaml-viewer">${esc(atob(data.result))}</pre>`; }
-catch { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`; }
-} else if (format === ‘json’ && data.result) {
-try { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(JSON.parse(atob(data.result)))}</div>`; }
-catch { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`; }
-} else {
-out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`;
-}
-} catch(e) { out.innerHTML = apiError(e); }
+  const out = document.getElementById('query-output');
+  const bodyText = document.getElementById('query-body').value;
+  const format = document.getElementById('query-format').value;
+  out.innerHTML = loading();
+  try {
+    const queryObj = JSON.parse(bodyText);
+    const data = await apiFetch('/api/v1/query/run', { method: 'POST', body: JSON.stringify({ query: queryObj, resultType: format }) });
+    if (format === 'csv' && data.result) {
+      try { out.innerHTML = `<pre class="yaml-viewer">${esc(atob(data.result))}</pre>`; }
+      catch { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`; }
+    } else if (format === 'json' && data.result) {
+      try { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(JSON.parse(atob(data.result)))}</div>`; }
+      catch { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`; }
+    } else {
+      out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`;
+    }
+  } catch(e) { out.innerHTML = apiError(e); }
 }
 
 // ─── CONNECTIONS ──────────────────────────────────────────────────────────────
 async function renderConnections(c) {
-c.innerHTML = loading();
-try {
-const data = await apiFetch(’/api/v1/connections?pageSize=50’);
-const conns = data.records || [];
-if (!conns.length) { c.innerHTML = empty(‘No connections found’); return; }
-c.innerHTML = `<div class="section-header"> <span class="section-title">Connections</span> <span class="count-badge">${conns.length}</span> </div> <div class="card-grid"> ${conns.map(conn =>`
-<div class="card">
-<div class="card-title">${esc(conn.name || ‘Connection’)}</div>
-<div class="card-sub">${conn.id}</div>
-<div class="card-meta">
-${conn.type ? `<span class="badge blue">${esc(conn.type)}</span>` : ‘’}
-${conn.dialect ? `<span class="badge">${esc(conn.dialect)}</span>` : ‘’}
-</div>
-</div>`).join('')} </div>`;
-} catch(e) { c.innerHTML = apiError(e); }
+  c.innerHTML = loading();
+  try {
+    const data = await apiFetch('/api/v1/connections?pageSize=50');
+    const conns = data.records || [];
+    if (!conns.length) { c.innerHTML = empty('No connections found'); return; }
+    c.innerHTML = `
+      <div class="section-header">
+        <span class="section-title">Connections</span>
+        <span class="count-badge">${conns.length}</span>
+      </div>
+      <div class="card-grid">
+        ${conns.map(conn => `
+          <div class="card">
+            <div class="card-title">${esc(conn.name || 'Connection')}</div>
+            <div class="card-sub">${conn.id}</div>
+            <div class="card-meta">
+              ${conn.type ? `<span class="badge blue">${esc(conn.type)}</span>` : ''}
+              ${conn.dialect ? `<span class="badge">${esc(conn.dialect)}</span>` : ''}
+            </div>
+          </div>`).join('')}
+      </div>`;
+  } catch(e) { c.innerHTML = apiError(e); }
 }
 
 // ─── HELPERS ──────────────────────────────────────────────────────────────────
 function loading(msg) {
-return `<div class="state-box"><div class="spinner"></div><div>${msg || 'Loading...'}</div></div>`;
+  return `<div class="state-box"><div class="spinner"></div><div>${msg || 'Loading...'}</div></div>`;
 }
 
 function empty(msg) {
-return `<div class="state-box"><div class="state-icon">○</div><div>${msg}</div></div>`;
+  return `<div class="state-box"><div class="state-icon">○</div><div>${msg}</div></div>`;
 }
 
 function esc(str) {
-return String(str ?? ‘’).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).replace(/”/g,’"’);
-}
-
-function copyTopicJson(i) {
-const t = window._topics?.[i];
-if (t) navigator.clipboard.writeText(JSON.stringify(t.data, null, 2));
-}
-
-function copySql(i) {
-const sql = window._lastSql?.[i];
-if (sql) navigator.clipboard.writeText(sql);
+  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function apiError(e) {
-return `<div class="error-box">⚠ ${esc(e.message || String(e))}</div>`;
+  return `<div class="error-box">⚠ ${esc(e.message || String(e))}</div>`;
 }
 
 function syntaxHighlight(json) {
-const str = typeof json === ‘string’ ? json : JSON.stringify(json, null, 2);
-return esc(str).replace(
-/(”(\u[a-zA-Z0-9]{4}|\[^u]|[^\”])*”(\s*:)?|\b(true|false|null)\b|-?\d+(?:.\d*)?(?:[eE][+-]?\d+)?)/g,
-match => {
-let cls = ‘num’;
-if (/^”/.test(match)) cls = /:$/.test(match) ? ‘key’ : ‘str’;
-else if (/true|false/.test(match)) cls = ‘bool’;
-else if (/null/.test(match)) cls = ‘null’;
-return `<span class="${cls}">${match}</span>`;
-}
-);
+  const str = typeof json === 'string' ? json : JSON.stringify(json, null, 2);
+  return esc(str).replace(
+    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    match => {
+      let cls = 'num';
+      if (/^"/.test(match)) cls = /:$/.test(match) ? 'key' : 'str';
+      else if (/true|false/.test(match)) cls = 'bool';
+      else if (/null/.test(match)) cls = 'null';
+      return `<span class="${cls}">${match}</span>`;
+    }
+  );
 }
 </script>
-
 </body>
 </html>
