@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,547 +8,336 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
-  :root {
-    --bg: #0d0f12;
-    --surface: #14181f;
-    --surface2: #1c2230;
-    --border: #252d3d;
-    --border2: #2e3a52;
-    --accent: #4f8ef7;
-    --accent2: #7eb8ff;
-    --green: #3ecf8e;
-    --yellow: #f5c842;
-    --red: #f56565;
-    --text: #e2e8f0;
-    --text2: #8899aa;
-    --text3: #4a5568;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: var(--sans);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ── Login screen ─────────────────────────────────────────────────────────── */
-  #login-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: var(--bg);
-  }
-
-  .login-box {
-    width: 380px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .login-header {
-    padding: 28px 28px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .login-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    color: var(--accent2);
-    margin-bottom: 8px;
-  }
-
-  .login-logo-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-  .login-sub {
-    font-size: 12px;
-    color: var(--text3);
-    font-family: var(--mono);
-  }
-
-  .login-body { padding: 24px 28px; }
-
-  .login-field { margin-bottom: 14px; }
-
-  .login-label {
-    display: block;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    margin-bottom: 6px;
-  }
-
-  .login-input {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  .login-input:focus { border-color: var(--accent); }
-
-  .login-hint {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    margin-top: 5px;
-  }
-
-  .login-btn {
-    width: 100%;
-    padding: 10px;
-    background: var(--accent);
-    border: none;
-    border-radius: 6px;
-    color: #fff;
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-    margin-top: 6px;
-  }
-
-  .login-btn:hover { background: var(--accent2); color: #000; }
-
-  .login-error {
-    background: rgba(245,101,101,0.08);
-    border: 1px solid rgba(245,101,101,0.25);
-    border-radius: 6px;
-    padding: 9px 12px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--red);
-    margin-bottom: 14px;
-    display: none;
-  }
-
-  /* ── App shell (hidden until authed) ─────────────────────────────────────── */
-  #app-shell { display: none; flex-direction: column; height: 100vh; }
-
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 24px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    flex-shrink: 0;
-  }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: var(--accent2);
-  }
-
-  .logo-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s infinite;
-  }
-
-  .header-meta { font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 12px; }
-  .header-meta span { color: var(--text2); }
-
-  .app {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  aside {
-    border-right: 1px solid var(--border);
-    background: var(--surface);
-    padding: 16px 0;
-    overflow-y: auto;
-  }
-
-  .nav-section { padding: 0 16px; margin-bottom: 20px; }
-
-  .nav-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: var(--text3);
-    text-transform: uppercase;
-    padding: 0 0 8px 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 8px;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    color: var(--text2);
-    transition: all 0.15s;
-    border: none;
-    background: none;
-    width: 100%;
-    text-align: left;
-  }
-
-  .nav-item:hover { background: var(--surface2); color: var(--text); }
-  .nav-item.active { background: rgba(79,142,247,0.12); color: var(--accent2); border-left: 2px solid var(--accent); padding-left: 8px; }
-  .nav-icon { font-size: 14px; width: 18px; text-align: center; }
-
-  main { display: flex; flex-direction: column; overflow: hidden; }
-
-  .toolbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    flex-shrink: 0;
-  }
-
-  .toolbar-title { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--accent2); flex: 1; }
-
-  .btn {
-    padding: 6px 14px;
-    border-radius: 6px;
-    border: 1px solid var(--border2);
-    background: var(--surface2);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 11px;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .btn:hover { border-color: var(--accent); color: var(--accent2); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn.primary:hover { background: var(--accent2); border-color: var(--accent2); color: #000; }
-  .btn.danger { border-color: rgba(245,101,101,0.4); color: var(--red); }
-  .btn.danger:hover { background: rgba(245,101,101,0.1); }
-
-  .content { flex: 1; overflow: auto; padding: 20px; }
-
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--green));
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .card:hover { border-color: var(--border2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-  .card:hover::before { opacity: 1; }
-
-  .card-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .card-sub { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 10px; word-break: break-all; }
-  .card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
-
-  .badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 4px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text2);
-  }
-
-  .badge.green { border-color: rgba(62,207,142,0.3); color: var(--green); background: rgba(62,207,142,0.06); }
-  .badge.blue { border-color: rgba(79,142,247,0.3); color: var(--accent2); background: rgba(79,142,247,0.06); }
-  .badge.yellow { border-color: rgba(245,200,66,0.3); color: var(--yellow); background: rgba(245,200,66,0.06); }
-
-  .detail-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-
-  .detail-header {
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .detail-title { font-weight: 600; font-size: 14px; }
-  .detail-body { padding: 18px; }
-
-  .json-viewer {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 16px;
-    font-family: var(--mono);
-    font-size: 11.5px;
-    line-height: 1.7;
-    overflow: auto;
-    max-height: 600px;
-    white-space: pre-wrap;
-    word-break: break-all;
-    color: var(--text2);
-  }
-
-  .json-viewer .key { color: var(--accent2); }
-  .json-viewer .str { color: var(--green); }
-  .json-viewer .num { color: var(--yellow); }
-  .json-viewer .bool { color: #f7a35c; }
-  .json-viewer .null { color: var(--red); }
-
-  .yaml-viewer {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 16px;
-    font-family: var(--mono);
-    font-size: 11.5px;
-    line-height: 1.7;
-    overflow: auto;
-    max-height: 70vh;
-    white-space: pre;
-    color: var(--text2);
-  }
-
-  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-
-  .data-table th {
-    text-align: left;
-    padding: 8px 12px;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    color: var(--text3);
-    text-transform: uppercase;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-  }
-
-  .data-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--text2);
-    vertical-align: top;
-  }
-
-  .data-table tr:hover td { background: var(--surface2); color: var(--text); }
-  .data-table .mono { font-family: var(--mono); font-size: 11px; color: var(--text3); }
-
-  .state-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    color: var(--text3);
-    font-family: var(--mono);
-    font-size: 12px;
-    gap: 12px;
-  }
-
-  .state-icon { font-size: 32px; }
-
-  .spinner {
-    width: 20px; height: 20px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .error-box {
-    background: rgba(245,101,101,0.07);
-    border: 1px solid rgba(245,101,101,0.25);
-    border-radius: 6px;
-    padding: 12px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--red);
-    line-height: 1.6;
-  }
-
-  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 16px; overflow-x: auto; }
-
-  .tab {
-    padding: 8px 16px;
-    font-family: var(--mono);
-    font-size: 11px;
-    cursor: pointer;
-    color: var(--text3);
-    border-bottom: 2px solid transparent;
-    transition: all 0.15s;
-    border: none;
-    background: none;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .tab:hover { color: var(--text2); }
-  .tab.active { color: var(--accent2); border-bottom: 2px solid var(--accent); }
-
-  .input {
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 8px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-    width: 100%;
-  }
-
-  .input:focus { border-color: var(--accent); }
-
-  .select {
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 12px;
-    padding: 8px 12px;
-    outline: none;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .form-group { display: flex; flex-direction: column; gap: 5px; }
-  .form-label { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; }
-
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-    cursor: pointer;
-    border: none;
-    background: none;
-    padding: 0;
-    margin-bottom: 16px;
-  }
-
-  .back-btn:hover { color: var(--accent2); }
-
-  .copy-btn {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 4px 10px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--surface2);
-    color: var(--text3);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
-  .copy-btn:hover { color: var(--text); border-color: var(--border2); }
-
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-
-  .section-title {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .count-badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    background: var(--surface2);
-    color: var(--text3);
-    border: 1px solid var(--border);
-  }
-
-  .divider { height: 1px; background: var(--border); margin: 16px 0; }
-
-  .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 16px; }
-
-  .info-cell { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
-  .info-cell-label { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-  .info-cell-value { font-size: 13px; font-weight: 500; color: var(--text); word-break: break-all; }
-  .info-cell-value.mono { font-family: var(--mono); font-size: 11px; color: var(--accent2); }
-
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+:root {
+–bg: #0d0f12;
+–surface: #14181f;
+–surface2: #1c2230;
+–border: #252d3d;
+–border2: #2e3a52;
+–accent: #4f8ef7;
+–accent2: #7eb8ff;
+–green: #3ecf8e;
+–yellow: #f5c842;
+–red: #f56565;
+–text: #e2e8f0;
+–text2: #8899aa;
+–text3: #4a5568;
+–mono: ‘IBM Plex Mono’, monospace;
+–sans: ‘IBM Plex Sans’, sans-serif;
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: var(–sans);
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+}
+
+#login-screen {
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+background: var(–bg);
+}
+
+.login-box {
+width: 380px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 12px;
+overflow: hidden;
+}
+
+.login-header { padding: 28px 28px 20px; border-bottom: 1px solid var(–border); }
+
+.login-logo {
+display: flex;
+align-items: center;
+gap: 10px;
+font-family: var(–mono);
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 0.06em;
+color: var(–accent2);
+margin-bottom: 8px;
+}
+
+.login-logo-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: var(–accent);
+box-shadow: 0 0 8px var(–accent);
+animation: pulse 2s infinite;
+}
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.login-sub { font-size: 12px; color: var(–text3); font-family: var(–mono); }
+.login-body { padding: 24px 28px; }
+.login-field { margin-bottom: 14px; }
+
+.login-label {
+display: block;
+font-family: var(–mono);
+font-size: 10px;
+color: var(–text3);
+text-transform: uppercase;
+letter-spacing: 0.07em;
+margin-bottom: 6px;
+}
+
+.login-input {
+width: 100%;
+background: var(–bg);
+border: 1px solid var(–border2);
+border-radius: 6px;
+color: var(–text);
+font-family: var(–mono);
+font-size: 12px;
+padding: 9px 12px;
+outline: none;
+transition: border-color 0.15s;
+}
+
+.login-input:focus { border-color: var(–accent); }
+.login-hint { font-family: var(–mono); font-size: 10px; color: var(–text3); margin-top: 5px; }
+
+.login-btn {
+width: 100%;
+padding: 10px;
+background: var(–accent);
+border: none;
+border-radius: 6px;
+color: #fff;
+font-family: var(–mono);
+font-size: 12px;
+font-weight: 600;
+cursor: pointer;
+transition: background 0.15s;
+margin-top: 6px;
+}
+
+.login-btn:hover { background: var(–accent2); color: #000; }
+
+.login-error {
+background: rgba(245,101,101,0.08);
+border: 1px solid rgba(245,101,101,0.25);
+border-radius: 6px;
+padding: 9px 12px;
+font-family: var(–mono);
+font-size: 11px;
+color: var(–red);
+margin-bottom: 14px;
+display: none;
+}
+
+#app-shell { display: none; flex-direction: column; height: 100vh; }
+
+header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 24px;
+border-bottom: 1px solid var(–border);
+background: var(–surface);
+position: sticky;
+top: 0;
+z-index: 100;
+flex-shrink: 0;
+}
+
+.logo {
+display: flex;
+align-items: center;
+gap: 10px;
+font-family: var(–mono);
+font-size: 13px;
+font-weight: 600;
+letter-spacing: 0.05em;
+color: var(–accent2);
+}
+
+.logo-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: var(–green);
+box-shadow: 0 0 8px var(–green);
+animation: pulse 2s infinite;
+}
+
+.header-meta { font-family: var(–mono); font-size: 11px; color: var(–text3); display: flex; align-items: center; gap: 12px; }
+.header-meta span { color: var(–text2); }
+
+.app { display: grid; grid-template-columns: 220px 1fr; flex: 1; min-height: 0; overflow: hidden; }
+
+aside { border-right: 1px solid var(–border); background: var(–surface); padding: 16px 0; overflow-y: auto; }
+.nav-section { padding: 0 16px; margin-bottom: 20px; }
+
+.nav-label {
+font-family: var(–mono);
+font-size: 10px;
+font-weight: 600;
+letter-spacing: 0.1em;
+color: var(–text3);
+text-transform: uppercase;
+padding: 0 0 8px 0;
+border-bottom: 1px solid var(–border);
+margin-bottom: 8px;
+}
+
+.nav-item {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 8px 10px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 13px;
+color: var(–text2);
+transition: all 0.15s;
+border: none;
+background: none;
+width: 100%;
+text-align: left;
+}
+
+.nav-item:hover { background: var(–surface2); color: var(–text); }
+.nav-item.active { background: rgba(79,142,247,0.12); color: var(–accent2); border-left: 2px solid var(–accent); padding-left: 8px; }
+.nav-icon { font-size: 14px; width: 18px; text-align: center; }
+
+main { display: flex; flex-direction: column; overflow: hidden; }
+
+.toolbar {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 12px 20px;
+border-bottom: 1px solid var(–border);
+background: var(–surface);
+flex-shrink: 0;
+}
+
+.toolbar-title { font-family: var(–mono); font-size: 12px; font-weight: 600; color: var(–accent2); flex: 1; }
+
+.btn {
+padding: 6px 14px;
+border-radius: 6px;
+border: 1px solid var(–border2);
+background: var(–surface2);
+color: var(–text);
+font-family: var(–mono);
+font-size: 11px;
+cursor: pointer;
+transition: all 0.15s;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+}
+
+.btn:hover { border-color: var(–accent); color: var(–accent2); }
+.btn.primary { background: var(–accent); border-color: var(–accent); color: #fff; }
+.btn.primary:hover { background: var(–accent2); border-color: var(–accent2); color: #000; }
+.btn.danger { border-color: rgba(245,101,101,0.4); color: var(–red); }
+.btn.danger:hover { background: rgba(245,101,101,0.1); }
+
+.content { flex: 1; overflow: auto; padding: 20px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+.card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 16px;
+cursor: pointer;
+transition: all 0.2s;
+position: relative;
+overflow: hidden;
+}
+
+.card::before { content: ‘’; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(–accent), var(–green)); opacity: 0; transition: opacity 0.2s; }
+.card:hover { border-color: var(–border2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+.card:hover::before { opacity: 1; }
+.card-title { font-size: 13px; font-weight: 600; color: var(–text); margin-bottom: 4px; }
+.card-sub { font-family: var(–mono); font-size: 10px; color: var(–text3); margin-bottom: 10px; word-break: break-all; }
+.card-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.badge { font-family: var(–mono); font-size: 10px; padding: 2px 7px; border-radius: 4px; background: var(–surface2); border: 1px solid var(–border); color: var(–text2); }
+.badge.green { border-color: rgba(62,207,142,0.3); color: var(–green); background: rgba(62,207,142,0.06); }
+.badge.blue { border-color: rgba(79,142,247,0.3); color: var(–accent2); background: rgba(79,142,247,0.06); }
+.badge.yellow { border-color: rgba(245,200,66,0.3); color: var(–yellow); background: rgba(245,200,66,0.06); }
+
+.detail-panel { background: var(–surface); border: 1px solid var(–border); border-radius: 8px; overflow: hidden; }
+.detail-header { padding: 14px 18px; border-bottom: 1px solid var(–border); display: flex; align-items: center; justify-content: space-between; }
+.detail-title { font-weight: 600; font-size: 14px; }
+.detail-body { padding: 18px; }
+
+.json-viewer { background: var(–bg); border: 1px solid var(–border); border-radius: 6px; padding: 16px; font-family: var(–mono); font-size: 11.5px; line-height: 1.7; overflow: auto; max-height: 600px; white-space: pre-wrap; word-break: break-all; color: var(–text2); }
+.json-viewer .key { color: var(–accent2); }
+.json-viewer .str { color: var(–green); }
+.json-viewer .num { color: var(–yellow); }
+.json-viewer .bool { color: #f7a35c; }
+.json-viewer .null { color: var(–red); }
+
+.yaml-viewer { background: var(–bg); border: 1px solid var(–border); border-radius: 6px; padding: 16px; font-family: var(–mono); font-size: 11.5px; line-height: 1.7; overflow: auto; max-height: 70vh; white-space: pre; color: var(–text2); }
+
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.data-table th { text-align: left; padding: 8px 12px; font-family: var(–mono); font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(–text3); text-transform: uppercase; border-bottom: 1px solid var(–border); background: var(–bg); }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid var(–border); font-size: 12px; color: var(–text2); vertical-align: top; }
+.data-table tr:hover td { background: var(–surface2); color: var(–text); }
+.data-table .mono { font-family: var(–mono); font-size: 11px; color: var(–text3); }
+
+.state-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(–text3); font-family: var(–mono); font-size: 12px; gap: 12px; }
+.state-icon { font-size: 32px; }
+.spinner { width: 20px; height: 20px; border: 2px solid var(–border); border-top-color: var(–accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-box { background: rgba(245,101,101,0.07); border: 1px solid rgba(245,101,101,0.25); border-radius: 6px; padding: 12px 16px; font-family: var(–mono); font-size: 12px; color: var(–red); line-height: 1.6; }
+
+.tabs { display: flex; border-bottom: 1px solid var(–border); margin-bottom: 16px; overflow-x: auto; }
+.tab { padding: 8px 16px; font-family: var(–mono); font-size: 11px; cursor: pointer; color: var(–text3); border-bottom: 2px solid transparent; transition: all 0.15s; border: none; background: none; white-space: nowrap; flex-shrink: 0; }
+.tab:hover { color: var(–text2); }
+.tab.active { color: var(–accent2); border-bottom: 2px solid var(–accent); }
+
+.input { background: var(–bg); border: 1px solid var(–border2); border-radius: 6px; color: var(–text); font-family: var(–mono); font-size: 12px; padding: 8px 12px; outline: none; transition: border-color 0.15s; width: 100%; }
+.input:focus { border-color: var(–accent); }
+
+.select { background: var(–bg); border: 1px solid var(–border2); border-radius: 6px; color: var(–text); font-family: var(–mono); font-size: 12px; padding: 8px 12px; outline: none; cursor: pointer; width: 100%; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-family: var(–mono); font-size: 10px; color: var(–text3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+.back-btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(–mono); font-size: 11px; color: var(–text3); cursor: pointer; border: none; background: none; padding: 0; margin-bottom: 16px; }
+.back-btn:hover { color: var(–accent2); }
+
+.copy-btn { font-family: var(–mono); font-size: 10px; padding: 4px 10px; border-radius: 4px; border: 1px solid var(–border); background: var(–surface2); color: var(–text3); cursor: pointer; transition: all 0.15s; }
+.copy-btn:hover { color: var(–text); border-color: var(–border2); }
+
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.section-title { font-family: var(–mono); font-size: 11px; font-weight: 600; color: var(–text3); text-transform: uppercase; letter-spacing: 0.08em; }
+.count-badge { font-family: var(–mono); font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(–surface2); color: var(–text3); border: 1px solid var(–border); }
+.divider { height: 1px; background: var(–border); margin: 16px 0; }
+
+.info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.info-cell { background: var(–bg); border: 1px solid var(–border); border-radius: 6px; padding: 12px 14px; }
+.info-cell-label { font-family: var(–mono); font-size: 10px; color: var(–text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.info-cell-value { font-size: 13px; font-weight: 500; color: var(–text); word-break: break-all; }
+.info-cell-value.mono { font-family: var(–mono); font-size: 11px; color: var(–accent2); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(–border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(–text3); }
 </style>
+
 </head>
 <body>
 
-<!-- ── LOGIN SCREEN ─────────────────────────────────────────────────────────── -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-header">
@@ -561,15 +351,12 @@
       <div class="login-error" id="login-error"></div>
       <div class="login-field">
         <label class="login-label">Worker URL</label>
-        <input class="login-input" id="worker-url" type="url"
-          placeholder="https://omni-api-proxy.xxx.workers.dev"
-          value="" />
+        <input class="login-input" id="worker-url" type="url" placeholder="https://omni-api-proxy.xxx.workers.dev" value="" />
         <div class="login-hint">Your Cloudflare Worker URL</div>
       </div>
       <div class="login-field">
         <label class="login-label">App Secret</label>
-        <input class="login-input" id="app-secret" type="password"
-          placeholder="The APP_SECRET you set in Cloudflare" />
+        <input class="login-input" id="app-secret" type="password" placeholder="The APP_SECRET you set in Cloudflare" />
         <div class="login-hint">Stored in memory only — not saved anywhere</div>
       </div>
       <button class="login-btn" onclick="doLogin()">Connect →</button>
@@ -577,56 +364,37 @@
   </div>
 </div>
 
-<!-- ── APP SHELL ────────────────────────────────────────────────────────────── -->
 <div id="app-shell">
   <header>
-    <div class="logo">
-      <div class="logo-dot"></div>
-      OMNI API EXPLORER
-    </div>
+    <div class="logo"><div class="logo-dot"></div>OMNI API EXPLORER</div>
     <div class="header-meta">
       <span id="worker-url-display"></span>
       <button class="btn danger" onclick="doLogout()" style="padding:4px 10px;font-size:10px;">Disconnect</button>
     </div>
   </header>
-
   <div class="app">
     <aside>
       <div class="nav-section">
         <div class="nav-label">Model</div>
-        <button class="nav-item active" onclick="navigate('models')" id="nav-models">
-          <span class="nav-icon">⬡</span> Models
-        </button>
-        <button class="nav-item" onclick="navigate('yaml')" id="nav-yaml">
-          <span class="nav-icon">≡</span> Model YAML
-        </button>
-        <button class="nav-item" onclick="navigate('topics')" id="nav-topics">
-          <span class="nav-icon">◈</span> Topics
-        </button>
+        <button class="nav-item active" onclick="navigate('models')" id="nav-models"><span class="nav-icon">⬡</span> Models</button>
+        <button class="nav-item" onclick="navigate('yaml')" id="nav-yaml"><span class="nav-icon">≡</span> Model YAML</button>
+        <button class="nav-item" onclick="navigate('topics')" id="nav-topics"><span class="nav-icon">◈</span> Topics</button>
       </div>
       <div class="nav-section">
         <div class="nav-label">Content</div>
-        <button class="nav-item" onclick="navigate('documents')" id="nav-documents">
-          <span class="nav-icon">▤</span> Documents
-        </button>
-        <button class="nav-item" onclick="navigate('export')" id="nav-export">
-          <span class="nav-icon">↗</span> Export Dashboard
-        </button>
+        <button class="nav-item" onclick="navigate('documents')" id="nav-documents"><span class="nav-icon">▤</span> Documents</button>
+        <button class="nav-item" onclick="navigate('inspect')" id="nav-inspect"><span class="nav-icon">◎</span> Workbook Inspector</button>
+        <button class="nav-item" onclick="navigate('export')" id="nav-export"><span class="nav-icon">↗</span> Export Dashboard</button>
       </div>
       <div class="nav-section">
         <div class="nav-label">Query</div>
-        <button class="nav-item" onclick="navigate('query')" id="nav-query">
-          <span class="nav-icon">▷</span> Run Query
-        </button>
+        <button class="nav-item" onclick="navigate('query')" id="nav-query"><span class="nav-icon">▷</span> Run Query</button>
       </div>
       <div class="nav-section">
         <div class="nav-label">Admin</div>
-        <button class="nav-item" onclick="navigate('connections')" id="nav-connections">
-          <span class="nav-icon">⌁</span> Connections
-        </button>
+        <button class="nav-item" onclick="navigate('connections')" id="nav-connections"><span class="nav-icon">⌁</span> Connections</button>
       </div>
     </aside>
-
     <main>
       <div class="toolbar">
         <span class="toolbar-title" id="toolbar-title">MODELS</span>
@@ -640,100 +408,76 @@
 </div>
 
 <script>
-// ─── AUTH STATE ───────────────────────────────────────────────────────────────
-let WORKER_URL = '';
-let APP_SECRET = '';
-let currentView = 'models';
-let state = { models: null, selectedModel: null, documents: null };
+var WORKER_URL = '';
+var APP_SECRET = '';
+var currentView = 'models';
+var state = { models: null, selectedModel: null, documents: null };
 
 async function doLogin() {
-  const workerUrl = document.getElementById('worker-url').value.trim().replace(/\/$/, '');
-  const secret = document.getElementById('app-secret').value.trim();
-  const errEl = document.getElementById('login-error');
+  var workerUrl = document.getElementById('worker-url').value.trim().replace(/\/$/, '');
+  var secret = document.getElementById('app-secret').value.trim();
+  var errEl = document.getElementById('login-error');
   errEl.style.display = 'none';
-
   if (!workerUrl || !secret) {
     errEl.textContent = 'Both fields are required.';
     errEl.style.display = 'block';
     return;
   }
-
-  // Test the connection
   try {
-    const res = await fetch(workerUrl + '/api/v1/models?pageSize=1', {
+    var res = await fetch(workerUrl + '/api/v1/models?pageSize=1', {
       headers: { 'X-App-Secret': secret },
       signal: AbortSignal.timeout(8000)
     });
     if (res.status === 401) {
-      errEl.textContent = '⚠ Wrong App Secret — check your Cloudflare Worker environment variable.';
+      errEl.textContent = 'Wrong App Secret — check your Cloudflare Worker environment variable.';
       errEl.style.display = 'block';
       return;
     }
     if (!res.ok && res.status !== 400) {
-      errEl.textContent = `⚠ Worker responded with ${res.status}. Check the Worker URL.`;
+      errEl.textContent = 'Worker responded with ' + res.status + '. Check the Worker URL.';
       errEl.style.display = 'block';
       return;
     }
   } catch(e) {
-    errEl.textContent = `⚠ Could not reach Worker: ${e.message}`;
+    errEl.textContent = 'Could not reach Worker: ' + e.message;
     errEl.style.display = 'block';
     return;
   }
-
   WORKER_URL = workerUrl;
   APP_SECRET = secret;
-
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-shell').style.display = 'flex';
   document.getElementById('worker-url-display').textContent = workerUrl.replace('https://', '');
-
-  await renderModels(document.getElementById('content'));
+  renderModels(document.getElementById('content'));
 }
 
-// Allow Enter key on login form
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') {
-    doLogin();
-  }
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') doLogin();
 });
 
 function doLogout() {
-  WORKER_URL = '';
-  APP_SECRET = '';
+  WORKER_URL = ''; APP_SECRET = '';
   state = { models: null, selectedModel: null, documents: null };
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app-shell').style.display = 'none';
   document.getElementById('app-secret').value = '';
 }
 
-// ─── API FETCH ────────────────────────────────────────────────────────────────
-async function apiFetch(path, opts = {}) {
-  const res = await fetch(WORKER_URL + path, {
-    ...opts,
-    headers: {
-      'Content-Type': 'application/json',
-      'X-App-Secret': APP_SECRET,
-      ...(opts.headers || {})
-    }
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`${res.status} ${res.statusText}: ${text.slice(0, 300)}`);
-  }
+async function apiFetch(path, opts) {
+  opts = opts || {};
+  var headers = { 'Content-Type': 'application/json', 'X-App-Secret': APP_SECRET };
+  if (opts.headers) Object.assign(headers, opts.headers);
+  var res = await fetch(WORKER_URL + path, { method: opts.method || 'GET', headers: headers, body: opts.body });
+  if (!res.ok) { var t = await res.text(); throw new Error(res.status + ' ' + res.statusText + ': ' + t.slice(0,300)); }
   return res.json();
 }
 
-// ─── NAVIGATION ───────────────────────────────────────────────────────────────
 function navigate(view) {
   currentView = view;
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  const nav = document.getElementById('nav-' + view);
+  document.querySelectorAll('.nav-item').forEach(function(el) { el.classList.remove('active'); });
+  var nav = document.getElementById('nav-' + view);
   if (nav) nav.classList.add('active');
-  const titles = {
-    models: 'MODELS', yaml: 'MODEL YAML', topics: 'TOPICS',
-    documents: 'DOCUMENTS', export: 'EXPORT DASHBOARD',
-    query: 'RUN QUERY', connections: 'CONNECTIONS'
-  };
+  var titles = { models:'MODELS', yaml:'MODEL YAML', topics:'TOPICS', documents:'DOCUMENTS', inspect:'WORKBOOK INSPECTOR', export:'EXPORT DASHBOARD', query:'RUN QUERY', connections:'CONNECTIONS' };
   document.getElementById('toolbar-title').textContent = titles[view] || view.toUpperCase();
   renderView(view);
 }
@@ -741,506 +485,432 @@ function navigate(view) {
 function refreshCurrent() { renderView(currentView); }
 
 async function renderView(view) {
-  const c = document.getElementById('content');
-  switch(view) {
-    case 'models':      await renderModels(c); break;
-    case 'yaml':        await renderYaml(c); break;
-    case 'topics':      await renderTopics(c); break;
-    case 'documents':   await renderDocuments(c); break;
-    case 'export':      renderExport(c); break;
-    case 'query':       renderQuery(c); break;
-    case 'connections': await renderConnections(c); break;
-  }
+  var c = document.getElementById('content');
+  if (view === 'models') { await renderModels(c); }
+  else if (view === 'yaml') { await renderYaml(c); }
+  else if (view === 'topics') { await renderTopics(c); }
+  else if (view === 'documents') { await renderDocuments(c); }
+  else if (view === 'inspect') { renderInspect(c); }
+  else if (view === 'export') { renderExport(c); }
+  else if (view === 'query') { renderQuery(c); }
+  else if (view === 'connections') { await renderConnections(c); }
 }
 
-// ─── MODELS ───────────────────────────────────────────────────────────────────
+// MODELS
 async function renderModels(c) {
-  c.innerHTML = loading();
+  c.innerHTML = spin();
   try {
-    const data = await apiFetch('/api/v1/models?pageSize=50');
+    var data = await apiFetch('/api/v1/models?pageSize=50');
     state.models = data.records || [];
     if (!state.models.length) { c.innerHTML = empty('No models found'); return; }
-    c.innerHTML = `
-      <div class="section-header">
-        <span class="section-title">Models</span>
-        <span class="count-badge">${state.models.length} models</span>
-      </div>
-      <div class="card-grid">
-        ${state.models.map(m => `
-          <div class="card" onclick="showModelDetail('${m.id}')">
-            <div class="card-title">${esc(m.name || 'Unnamed Model')}</div>
-            <div class="card-sub">${m.id}</div>
-            <div class="card-meta">
-              <span class="badge ${m.modelKind === 'SCHEMA' ? 'green' : m.modelKind === 'SHARED' ? 'blue' : ''}">${m.modelKind || 'unknown'}</span>
-              ${m.branches?.length ? `<span class="badge yellow">${m.branches.length} branch${m.branches.length > 1 ? 'es' : ''}</span>` : ''}
-            </div>
-          </div>`).join('')}
-      </div>`;
-  } catch(e) { c.innerHTML = apiError(e); }
+    c.innerHTML = '<div class="section-header"><span class="section-title">Models</span><span class="count-badge">' + state.models.length + ' models</span></div><div class="card-grid">' +
+      state.models.map(function(m) {
+        return '<div class="card" onclick="showModelDetail(\'' + m.id + '\')">' +
+          '<div class="card-title">' + esc(m.name || 'Unnamed') + '</div><div class="card-sub">' + m.id + '</div>' +
+          '<div class="card-meta"><span class="badge ' + (m.modelKind==='SCHEMA'?'green':m.modelKind==='SHARED'?'blue':'') + '">' + (m.modelKind||'unknown') + '</span>' +
+          (m.branches&&m.branches.length?'<span class="badge yellow">'+m.branches.length+' branch'+(m.branches.length>1?'es':'')+'</span>':'') + '</div></div>';
+      }).join('') + '</div>';
+  } catch(e) { c.innerHTML = err(e); }
 }
 
 function showModelDetail(id) {
-  const m = state.models.find(x => x.id === id);
+  var m = state.models.find(function(x){return x.id===id;});
   if (!m) return;
   state.selectedModel = m;
-  const c = document.getElementById('content');
-  c.innerHTML = `
-    <button class="back-btn" onclick="renderModels(document.getElementById('content'))">← Back to models</button>
-    <div class="detail-panel">
-      <div class="detail-header">
-        <span class="detail-title">${esc(m.name)}</span>
-        <div style="display:flex;gap:8px;">
-          <button class="btn" onclick="navigate('yaml')">View YAML</button>
-          <button class="btn" onclick="navigate('topics')">View Topics</button>
-        </div>
-      </div>
-      <div class="detail-body">
-        <div class="info-grid">
-          <div class="info-cell"><div class="info-cell-label">Model ID</div><div class="info-cell-value mono">${m.id}</div></div>
-          <div class="info-cell"><div class="info-cell-label">Kind</div><div class="info-cell-value">${m.modelKind}</div></div>
-          <div class="info-cell"><div class="info-cell-label">Connection ID</div><div class="info-cell-value mono">${m.connectionId || '—'}</div></div>
-          <div class="info-cell"><div class="info-cell-label">Base Model ID</div><div class="info-cell-value mono">${m.baseModelId || '—'}</div></div>
-          <div class="info-cell"><div class="info-cell-label">Created</div><div class="info-cell-value">${m.createdAt ? new Date(m.createdAt).toLocaleDateString() : '—'}</div></div>
-          <div class="info-cell"><div class="info-cell-label">Updated</div><div class="info-cell-value">${m.updatedAt ? new Date(m.updatedAt).toLocaleDateString() : '—'}</div></div>
-        </div>
-        ${m.branches?.length ? `
-          <div class="divider"></div>
-          <div class="section-header"><span class="section-title">Branches</span><span class="count-badge">${m.branches.length}</span></div>
-          <table class="data-table">
-            <thead><tr><th>Name</th><th>Branch ID</th><th>Updated</th></tr></thead>
-            <tbody>${m.branches.map(b => `<tr>
-              <td>${esc(b.name)}</td>
-              <td class="mono">${b.id}</td>
-              <td>${b.updatedAt ? new Date(b.updatedAt).toLocaleDateString() : '—'}</td>
-            </tr>`).join('')}</tbody>
-          </table>` : ''}
-      </div>
-    </div>`;
+  var c = document.getElementById('content');
+  var branches = '';
+  if (m.branches && m.branches.length) {
+    branches = '<div class="divider"></div><div class="section-header"><span class="section-title">Branches</span></div><table class="data-table"><thead><tr><th>Name</th><th>ID</th><th>Updated</th></tr></thead><tbody>' +
+      m.branches.map(function(b){return '<tr><td>'+esc(b.name)+'</td><td class="mono">'+b.id+'</td><td>'+(b.updatedAt?new Date(b.updatedAt).toLocaleDateString():'—')+'</td></tr>';}).join('') + '</tbody></table>';
+  }
+  c.innerHTML = '<button class="back-btn" onclick="renderModels(document.getElementById(\'content\'))">← Back</button>' +
+    '<div class="detail-panel"><div class="detail-header"><span class="detail-title">' + esc(m.name) + '</span>' +
+    '<div style="display:flex;gap:8px;"><button class="btn" onclick="navigate(\'yaml\')">View YAML</button><button class="btn" onclick="navigate(\'topics\')">View Topics</button></div></div>' +
+    '<div class="detail-body"><div class="info-grid">' +
+    '<div class="info-cell"><div class="info-cell-label">Model ID</div><div class="info-cell-value mono">' + m.id + '</div></div>' +
+    '<div class="info-cell"><div class="info-cell-label">Kind</div><div class="info-cell-value">' + m.modelKind + '</div></div>' +
+    '<div class="info-cell"><div class="info-cell-label">Connection ID</div><div class="info-cell-value mono">' + (m.connectionId||'—') + '</div></div>' +
+    '<div class="info-cell"><div class="info-cell-label">Updated</div><div class="info-cell-value">' + (m.updatedAt?new Date(m.updatedAt).toLocaleDateString():'—') + '</div></div>' +
+    '</div>' + branches + '</div></div>';
 }
 
-// ─── YAML ─────────────────────────────────────────────────────────────────────
+// YAML
 async function renderYaml(c) {
-  if (!state.models) {
-    c.innerHTML = loading();
-    try { const d = await apiFetch('/api/v1/models?pageSize=50'); state.models = d.records || []; }
-    catch(e) { c.innerHTML = apiError(e); return; }
-  }
-  const selectedId = state.selectedModel?.id || state.models[0]?.id || '';
-  c.innerHTML = `
-    <div class="form-row" style="max-width:600px;margin-bottom:16px;">
-      <div class="form-group">
-        <label class="form-label">Model</label>
-        <select class="select" id="yaml-model-select">
-          ${state.models.map(m => `<option value="${m.id}" ${m.id===selectedId?'selected':''}>${esc(m.name)} (${m.modelKind})</option>`).join('')}
-        </select>
-      </div>
-      <div class="form-group" style="justify-content:flex-end;">
-        <label class="form-label">&nbsp;</label>
-        <button class="btn primary" onclick="loadYaml()">Load YAML</button>
-      </div>
-    </div>
-    <div id="yaml-output"></div>`;
-  if (selectedId) loadYaml();
+  if (!state.models) { c.innerHTML = spin(); try { var d=await apiFetch('/api/v1/models?pageSize=50'); state.models=d.records||[]; } catch(e){c.innerHTML=err(e);return;} }
+  var sel = (state.selectedModel&&state.selectedModel.id)||(state.models[0]&&state.models[0].id)||'';
+  c.innerHTML = '<div class="form-row" style="max-width:600px;margin-bottom:16px;"><div class="form-group"><label class="form-label">Model</label><select class="select" id="yaml-sel">' +
+    state.models.map(function(m){return '<option value="'+m.id+'"'+(m.id===sel?' selected':'')+'>'+ esc(m.name)+' ('+m.modelKind+')</option>';}).join('') +
+    '</select></div><div class="form-group" style="justify-content:flex-end;"><label class="form-label">&nbsp;</label><button class="btn primary" onclick="loadYaml()">Load YAML</button></div></div><div id="yaml-out"></div>';
+  if (sel) loadYaml();
 }
 
 async function loadYaml() {
-  const modelId = document.getElementById('yaml-model-select')?.value;
+  var modelId = document.getElementById('yaml-sel')&&document.getElementById('yaml-sel').value;
   if (!modelId) return;
-  const out = document.getElementById('yaml-output');
-  out.innerHTML = loading();
+  var out = document.getElementById('yaml-out');
+  out.innerHTML = spin();
   try {
-    const data = await apiFetch(`/api/v1/models/${modelId}/yaml`);
-    const files = data.files || data;
+    var data = await apiFetch('/api/v1/models/'+modelId+'/yaml');
+    var files = data.files||data;
     window._yamlFiles = {};
-    let fileKeys = [];
-    if (typeof files === 'object' && !Array.isArray(files)) {
-      fileKeys = Object.keys(files);
-      window._yamlFiles = files;
-    } else {
-      window._yamlFiles = { 'response.json': JSON.stringify(files, null, 2) };
-      fileKeys = ['response.json'];
-    }
-    window._currentYamlKey = fileKeys[0];
-    out.innerHTML = `
-      <div class="section-header">
-        <span class="section-title">YAML Files</span>
-        <span class="count-badge">${fileKeys.length} files</span>
-      </div>
-      <div style="overflow-x:auto;white-space:nowrap;" class="tabs" id="yaml-tab-bar">
-        ${fileKeys.map((k,i) => `<button class="tab ${i===0?'active':''}" onclick="switchYamlTab('${esc(k)}',this)">${esc(k)}</button>`).join('')}
-      </div>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
-        <button class="copy-btn" onclick="copyYaml()">Copy</button>
-      </div>
-      <div class="yaml-viewer" id="yaml-content">${esc(files[fileKeys[0]] || '')}</div>`;
-  } catch(e) { out.innerHTML = apiError(e); }
+    var keys = [];
+    if (typeof files==='object'&&!Array.isArray(files)) { keys=Object.keys(files); window._yamlFiles=files; }
+    else { window._yamlFiles={'response.json':JSON.stringify(files,null,2)}; keys=['response.json']; }
+    window._yamlKey = keys[0];
+    out.innerHTML = '<div class="section-header"><span class="section-title">YAML Files</span><span class="count-badge">'+keys.length+' files</span></div>' +
+      '<div class="tabs" id="yaml-tabs" style="overflow-x:auto;white-space:nowrap;">' +
+      keys.map(function(k,i){return '<button class="tab'+(i===0?' active':'')+'" onclick="switchYamlTab(\''+esc(k)+'\',this)">'+esc(k)+'</button>';}).join('') + '</div>' +
+      '<div style="display:flex;justify-content:flex-end;margin-bottom:8px;"><button class="copy-btn" onclick="copyYaml()">Copy</button></div>' +
+      '<div class="yaml-viewer" id="yaml-content">'+esc(files[keys[0]]||'')+'</div>';
+  } catch(e) { out.innerHTML = err(e); }
 }
 
-function switchYamlTab(key, btn) {
-  document.querySelectorAll('#yaml-tab-bar .tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  window._currentYamlKey = key;
-  document.getElementById('yaml-content').textContent = window._yamlFiles[key] || '';
+function switchYamlTab(key,btn) {
+  document.querySelectorAll('#yaml-tabs .tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active'); window._yamlKey=key;
+  document.getElementById('yaml-content').textContent=window._yamlFiles[key]||'';
 }
 
 function copyYaml() {
-  navigator.clipboard.writeText(window._yamlFiles?.[window._currentYamlKey] || '');
-  const btn = document.querySelector('#yaml-output .copy-btn');
-  if (btn) { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 1500); }
+  navigator.clipboard.writeText(window._yamlFiles&&window._yamlFiles[window._yamlKey]||'');
+  var b=document.querySelector('#yaml-out .copy-btn'); if(b){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy';},1500);}
 }
 
-// ─── TOPICS ───────────────────────────────────────────────────────────────────
+// TOPICS
 async function renderTopics(c) {
-  if (!state.models) {
-    c.innerHTML = loading();
-    try { const d = await apiFetch('/api/v1/models?pageSize=50'); state.models = d.records || []; }
-    catch(e) { c.innerHTML = apiError(e); return; }
-  }
-  const selectedId = state.selectedModel?.id || state.models[0]?.id || '';
-  c.innerHTML = `
-    <div class="form-row" style="max-width:600px;margin-bottom:16px;">
-      <div class="form-group">
-        <label class="form-label">Model</label>
-        <select class="select" id="topics-model-select">
-          ${state.models.map(m => `<option value="${m.id}" ${m.id===selectedId?'selected':''}>${esc(m.name)} (${m.modelKind})</option>`).join('')}
-        </select>
-      </div>
-      <div class="form-group" style="justify-content:flex-end;">
-        <label class="form-label">&nbsp;</label>
-        <button class="btn primary" onclick="loadTopics()">Load Topics</button>
-      </div>
-    </div>
-    <div id="topics-output"></div>`;
-  if (selectedId) loadTopics();
+  if (!state.models) { c.innerHTML=spin(); try{var d=await apiFetch('/api/v1/models?pageSize=50');state.models=d.records||[];}catch(e){c.innerHTML=err(e);return;} }
+  var sel=(state.selectedModel&&state.selectedModel.id)||(state.models[0]&&state.models[0].id)||'';
+  c.innerHTML='<div class="form-row" style="max-width:600px;margin-bottom:16px;"><div class="form-group"><label class="form-label">Model</label><select class="select" id="topics-sel">'+
+    state.models.map(function(m){return '<option value="'+m.id+'"'+(m.id===sel?' selected':'')+'>'+esc(m.name)+' ('+m.modelKind+')</option>';}).join('')+
+    '</select></div><div class="form-group" style="justify-content:flex-end;"><label class="form-label">&nbsp;</label><button class="btn primary" onclick="loadTopics()">Load Topics</button></div></div><div id="topics-out"></div>';
+  if (sel) loadTopics();
 }
 
 async function loadTopics() {
-  const modelId = document.getElementById('topics-model-select')?.value;
+  var modelId=document.getElementById('topics-sel')&&document.getElementById('topics-sel').value;
   if (!modelId) return;
-  const out = document.getElementById('topics-output');
-  out.innerHTML = loading('Fetching YAML to discover topic names...');
+  var out=document.getElementById('topics-out');
+  out.innerHTML=spin('Fetching YAML to discover topic names...');
   try {
-    const yamlData = await apiFetch(`/api/v1/models/${modelId}/yaml`);
-    const files = yamlData.files || yamlData;
-    const topicFileKeys = Object.keys(files).filter(k => k.endsWith('.topic'));
-    if (!topicFileKeys.length) { out.innerHTML = empty('No .topic files found in this model\'s YAML'); return; }
-
-    const topicNames = topicFileKeys.map(k => k.split('/').pop().replace(/\.topic$/, ''));
-    out.innerHTML = loading(`Found ${topicNames.length} topics — fetching details...`);
-
-    const results = await Promise.allSettled(
-      topicNames.map(name =>
-        apiFetch(`/api/v1/models/${modelId}/topic/${encodeURIComponent(name)}`)
-          .then(d => ({ name, data: d.topic || d }))
-      )
-    );
-
-    const topics = results.filter(r => r.status === 'fulfilled').map(r => r.value);
-    const failed = results.filter(r => r.status === 'rejected').map((_, i) => topicNames[i]);
-
-    if (!topics.length) { out.innerHTML = empty('Could not load any topics'); return; }
-    window._topics = topics;
-
-    out.innerHTML = `
-      <div class="section-header">
-        <span class="section-title">Topics</span>
-        <span class="count-badge">${topics.length} loaded${failed.length ? ` · ${failed.length} failed` : ''}</span>
-      </div>
-      ${failed.length ? `<div class="error-box" style="margin-bottom:14px;">Failed to load: ${failed.map(esc).join(', ')}</div>` : ''}
-      <div class="card-grid">
-        ${topics.map((t, i) => {
-          const d = t.data;
-          const label = d.label || d.name || t.name;
-          const baseView = d.base_view_name || d.base_view || '';
-          const viewCount = d.views?.length || 0;
-          const joinCount = d.relationships?.length || 0;
-          return `<div class="card" onclick="showTopicDetail(${i})">
-            <div class="card-title">${esc(label)}</div>
-            <div class="card-sub">${esc(d.ide_file_name || t.name + '.topic')}</div>
-            <div class="card-meta">
-              ${baseView ? `<span class="badge blue">base: ${esc(baseView)}</span>` : ''}
-              ${viewCount ? `<span class="badge">${viewCount} view${viewCount !== 1 ? 's' : ''}</span>` : ''}
-              ${joinCount ? `<span class="badge yellow">${joinCount} join${joinCount !== 1 ? 's' : ''}</span>` : ''}
-            </div>
-          </div>`;
-        }).join('')}
-      </div>`;
-  } catch(e) { out.innerHTML = apiError(e); }
+    var yamlData=await apiFetch('/api/v1/models/'+modelId+'/yaml');
+    var files=yamlData.files||yamlData;
+    var topicKeys=Object.keys(files).filter(function(k){return k.endsWith('.topic');});
+    if (!topicKeys.length){out.innerHTML=empty('No .topic files found');return;}
+    var names=topicKeys.map(function(k){return k.split('/').pop().replace(/\.topic$/,'');});
+    out.innerHTML=spin('Found '+names.length+' topics — fetching details...');
+    var results=await Promise.allSettled(names.map(function(n){
+      return apiFetch('/api/v1/models/'+modelId+'/topic/'+encodeURIComponent(n)).then(function(d){return{name:n,data:d.topic||d};});
+    }));
+    var topics=results.filter(function(r){return r.status==='fulfilled';}).map(function(r){return r.value;});
+    var failed=results.filter(function(r){return r.status==='rejected';}).map(function(_,i){return names[i];});
+    if (!topics.length){out.innerHTML=empty('Could not load any topics');return;}
+    window._topics=topics;
+    out.innerHTML='<div class="section-header"><span class="section-title">Topics</span><span class="count-badge">'+topics.length+' loaded'+(failed.length?' · '+failed.length+' failed':'')+'</span></div>'+
+      (failed.length?'<div class="error-box" style="margin-bottom:14px;">Failed: '+failed.map(esc).join(', ')+'</div>':'')+
+      '<div class="card-grid">'+topics.map(function(t,i){
+        var d=t.data,label=d.label||d.name||t.name,base=d.base_view_name||d.base_view||'',vc=(d.views&&d.views.length)||0,jc=(d.relationships&&d.relationships.length)||0;
+        return '<div class="card" onclick="showTopicDetail('+i+')"><div class="card-title">'+esc(label)+'</div><div class="card-sub">'+esc(d.ide_file_name||t.name+'.topic')+'</div>'+
+          '<div class="card-meta">'+(base?'<span class="badge blue">base: '+esc(base)+'</span>':'')+(vc?'<span class="badge">'+vc+' view'+(vc!==1?'s':'')+'</span>':'')+(jc?'<span class="badge yellow">'+jc+' join'+(jc!==1?'s':'')+'</span>':'')+'</div></div>';
+      }).join('')+'</div>';
+  } catch(e) { out.innerHTML=err(e); }
 }
 
 function showTopicDetail(i) {
-  const t = window._topics[i];
-  const d = t.data;
-  const c = document.getElementById('content');
-  const viewSummary = (d.views || []).map(v => `
-    <tr>
-      <td style="font-weight:500;color:var(--text)">${esc(v.label || v.name)}</td>
-      <td class="mono">${esc(v.name)}</td>
-      <td>${v.dimensions?.length || 0}</td>
-      <td>${v.measures?.length || 0}</td>
-    </tr>`).join('');
-
-  c.innerHTML = `
-    <button class="back-btn" onclick="renderTopics(document.getElementById('content'))">← Back to topics</button>
-    <div class="detail-panel">
-      <div class="detail-header">
-        <span class="detail-title">${esc(d.label || d.name || t.name)}</span>
-        <button class="copy-btn" onclick="navigator.clipboard.writeText(JSON.stringify(window._topics[${i}].data,null,2))">Copy JSON</button>
-      </div>
-      <div class="detail-body">
-        <div class="info-grid" style="margin-bottom:16px;">
-          <div class="info-cell"><div class="info-cell-label">Base View</div><div class="info-cell-value mono">${esc(d.base_view_name || '—')}</div></div>
-          <div class="info-cell"><div class="info-cell-label">File</div><div class="info-cell-value mono">${esc(d.ide_file_name || t.name + '.topic')}</div></div>
-          <div class="info-cell"><div class="info-cell-label">Views</div><div class="info-cell-value">${d.views?.length || 0}</div></div>
-          <div class="info-cell"><div class="info-cell-label">Relationships</div><div class="info-cell-value">${d.relationships?.length || 0}</div></div>
-        </div>
-        ${viewSummary ? `
-          <div class="section-header"><span class="section-title">Views in Topic</span></div>
-          <table class="data-table" style="margin-bottom:16px;">
-            <thead><tr><th>Label</th><th>View Name</th><th>Dimensions</th><th>Measures</th></tr></thead>
-            <tbody>${viewSummary}</tbody>
-          </table>` : ''}
-        <div class="section-header"><span class="section-title">Full JSON</span></div>
-        <div class="json-viewer">${syntaxHighlight(d)}</div>
-      </div>
-    </div>`;
+  var t=window._topics[i],d=t.data,c=document.getElementById('content');
+  var vs=(d.views||[]).map(function(v){return '<tr><td style="font-weight:500;color:var(--text)">'+esc(v.label||v.name)+'</td><td class="mono">'+esc(v.name)+'</td><td>'+((v.dimensions&&v.dimensions.length)||0)+'</td><td>'+((v.measures&&v.measures.length)||0)+'</td></tr>';}).join('');
+  c.innerHTML='<button class="back-btn" onclick="renderTopics(document.getElementById(\'content\'))">← Back to topics</button>'+
+    '<div class="detail-panel"><div class="detail-header"><span class="detail-title">'+esc(d.label||d.name||t.name)+'</span>'+
+    '<button class="copy-btn" onclick="copyTopicJson('+i+')">Copy JSON</button></div>'+
+    '<div class="detail-body"><div class="info-grid" style="margin-bottom:16px;">'+
+    '<div class="info-cell"><div class="info-cell-label">Base View</div><div class="info-cell-value mono">'+esc(d.base_view_name||'—')+'</div></div>'+
+    '<div class="info-cell"><div class="info-cell-label">File</div><div class="info-cell-value mono">'+esc(d.ide_file_name||t.name+'.topic')+'</div></div>'+
+    '<div class="info-cell"><div class="info-cell-label">Views</div><div class="info-cell-value">'+((d.views&&d.views.length)||0)+'</div></div>'+
+    '<div class="info-cell"><div class="info-cell-label">Relationships</div><div class="info-cell-value">'+((d.relationships&&d.relationships.length)||0)+'</div></div>'+
+    '</div>'+(vs?'<div class="section-header"><span class="section-title">Views in Topic</span></div><table class="data-table" style="margin-bottom:16px;"><thead><tr><th>Label</th><th>View Name</th><th>Dimensions</th><th>Measures</th></tr></thead><tbody>'+vs+'</tbody></table>':'')+
+    '<div class="section-header"><span class="section-title">Full JSON</span></div><div class="json-viewer">'+hi(d)+'</div></div></div>';
 }
 
-// ─── DOCUMENTS ────────────────────────────────────────────────────────────────
+// DOCUMENTS
 async function renderDocuments(c) {
-  c.innerHTML = loading();
+  c.innerHTML=spin();
   try {
-    const data = await apiFetch('/api/v1/documents?pageSize=50');
-    state.documents = data.records || [];
-    if (!state.documents.length) { c.innerHTML = empty('No documents found'); return; }
-    c.innerHTML = `
-      <div class="section-header">
-        <span class="section-title">Documents / Workbooks</span>
-        <span class="count-badge">${state.documents.length} documents</span>
-      </div>
-      <table class="data-table">
-        <thead><tr><th>Name</th><th>Type</th><th>Has Dashboard</th><th>Identifier</th><th>Updated</th><th></th></tr></thead>
-        <tbody>
-          ${state.documents.map(d => `<tr>
-            <td style="font-weight:500;color:var(--text)">${esc(d.name || 'Untitled')}</td>
-            <td><span class="badge ${d.type === 'dashboard' ? 'green' : 'blue'}">${esc(d.type || 'document')}</span></td>
-            <td>${d.hasDashboard ? '<span class="badge green">yes</span>' : '<span class="badge">no</span>'}</td>
-            <td class="mono" style="font-size:10px">${esc(d.identifier || '—')}</td>
-            <td style="color:var(--text3);font-size:11px">${d.updatedAt ? new Date(d.updatedAt).toLocaleDateString() : '—'}</td>
-            <td>${d.hasDashboard ? `<button class="btn" onclick="goExport('${esc(d.identifier)}')">Export</button>` : ''}</td>
-          </tr>`).join('')}
-        </tbody>
-      </table>`;
-  } catch(e) { c.innerHTML = apiError(e); }
+    var data=await apiFetch('/api/v1/documents?pageSize=50');
+    state.documents=data.records||[];
+    if (!state.documents.length){c.innerHTML=empty('No documents found');return;}
+    c.innerHTML='<div class="section-header"><span class="section-title">Documents / Workbooks</span><span class="count-badge">'+state.documents.length+' documents</span></div>'+
+      '<table class="data-table"><thead><tr><th>Name</th><th>Type</th><th>Has Dashboard</th><th>Identifier</th><th>Updated</th><th></th></tr></thead><tbody>'+
+      state.documents.map(function(d){
+        return '<tr><td style="font-weight:500;color:var(--text)">'+esc(d.name||'Untitled')+'</td>'+
+          '<td><span class="badge '+(d.type==='dashboard'?'green':'blue')+'">'+esc(d.type||'document')+'</span></td>'+
+          '<td>'+(d.hasDashboard?'<span class="badge green">yes</span>':'<span class="badge">no</span>')+'</td>'+
+          '<td class="mono" style="font-size:10px">'+esc(d.identifier||'—')+'</td>'+
+          '<td style="color:var(--text3);font-size:11px">'+(d.updatedAt?new Date(d.updatedAt).toLocaleDateString():'—')+'</td>'+
+          '<td style="display:flex;gap:6px;">'+(d.hasDashboard?'<button class="btn" onclick="goInspect(\''+esc(d.identifier)+'\')">Inspect</button><button class="btn" onclick="goExport(\''+esc(d.identifier)+'\')">Export</button>':'')+'</td></tr>';
+      }).join('')+'</tbody></table>';
+  } catch(e) { c.innerHTML=err(e); }
 }
 
-// ─── EXPORT ───────────────────────────────────────────────────────────────────
-function renderExport(c) {
-  window._exportDocs = state.documents || [];
-  const hasOptions = window._exportDocs.length > 0;
-  c.innerHTML = `
-    <div style="max-width:680px;">
-      <div class="detail-panel">
-        <div class="detail-header"><span class="detail-title">Export Dashboard</span></div>
-        <div class="detail-body">
-          ${!hasOptions ? `<p style="font-size:12px;color:var(--text3);margin-bottom:14px;">Tip: load <a href="#" onclick="navigate('documents')" style="color:var(--accent2)">Documents</a> first to pick from a list.</p>` : ''}
-          <div class="form-group" style="margin-bottom:12px;">
-            <label class="form-label">Dashboard Identifier</label>
-            <input class="input" id="export-doc-id" placeholder="Paste document identifier (e.g. abc123)..." />
-          </div>
-          ${hasOptions ? `
-            <div class="form-group" style="margin-bottom:14px;">
-              <label class="form-label">Or pick from documents</label>
-              <select class="select" id="export-doc-select" onchange="exportSelectChanged(this)">
-                <option value="">— select a document —</option>
-                ${window._exportDocs.map((d,i) => `<option value="${i}">${esc(d.name || 'Untitled')} ${d.identifier ? '(' + esc(d.identifier) + ')' : ''}</option>`).join('')}
-              </select>
-            </div>` : ''}
-          <button class="btn primary" onclick="runExport()">↗ Export</button>
-        </div>
-      </div>
-      <div id="export-output" style="margin-top:16px;"></div>
-    </div>`;
+// WORKBOOK INSPECTOR
+function renderInspect(c) {
+  window._iDocs=state.documents||[];
+  var opts=window._iDocs.map(function(d,i){return '<option value="'+i+'">'+esc(d.name||'Untitled')+(d.identifier?' ('+esc(d.identifier)+')':'')+'</option>';}).join('');
+  c.innerHTML='<div style="max-width:780px;">'+
+    '<div class="detail-panel" style="margin-bottom:16px;"><div class="detail-header"><span class="detail-title">Workbook Inspector</span></div>'+
+    '<div class="detail-body">'+
+    (!opts?'<p style="font-size:12px;color:var(--text3);margin-bottom:14px;">Tip: load <a href="#" onclick="navigate(\'documents\')" style="color:var(--accent2)">Documents</a> first.</p>':'')+
+    '<div class="form-group" style="margin-bottom:12px;"><label class="form-label">Document Identifier</label><input class="input" id="iid" placeholder="Paste document identifier..." /></div>'+
+    (opts?'<div class="form-group" style="margin-bottom:14px;"><label class="form-label">Or pick from documents</label><select class="select" id="isel" onchange="iSelChange(this)"><option value="">— select —</option>'+opts+'</select></div>':'')+
+    '<button class="btn primary" onclick="runInspect()">◎ Inspect</button>'+
+    '</div></div><div id="iout"></div></div>';
 }
 
-function exportSelectChanged(sel) {
-  const idx = sel.value;
-  if (idx === '') return;
-  const doc = window._exportDocs[parseInt(idx)];
-  if (doc?.identifier) document.getElementById('export-doc-id').value = doc.identifier;
+function iSelChange(sel) {
+  var idx=sel.value; if(!idx) return;
+  var d=window._iDocs[parseInt(idx)]; if(d&&d.identifier) document.getElementById('iid').value=d.identifier;
 }
 
-function goExport(identifier) {
-  navigate('export');
-  setTimeout(() => {
-    const el = document.getElementById('export-doc-id');
-    if (el) el.value = identifier;
-    const sel = document.getElementById('export-doc-select');
-    if (sel && window._exportDocs) {
-      const idx = window._exportDocs.findIndex(d => d.identifier === identifier);
-      if (idx >= 0) sel.value = String(idx);
+function goInspect(id) {
+  navigate('inspect');
+  setTimeout(function(){
+    var el=document.getElementById('iid'); if(el) el.value=id;
+    var s=document.getElementById('isel');
+    if(s&&window._iDocs){var i=window._iDocs.findIndex(function(d){return d.identifier===id;});if(i>=0)s.value=String(i);}
+  },80);
+}
+
+async function runInspect() {
+  var identifier=document.getElementById('iid')&&document.getElementById('iid').value.trim();
+  if (!identifier){alert('Please enter or select a document identifier first.');return;}
+  var out=document.getElementById('iout');
+  out.innerHTML=spin('Fetching workbook data...');
+  try {
+    var res=await Promise.allSettled([
+      apiFetch('/api/v1/documents/'+identifier+'/queries'),
+      apiFetch('/api/v1/documents/'+identifier)
+    ]);
+    var queries=(res[0].status==='fulfilled'&&res[0].value.queries)||[];
+    var dash=res[1].status==='fulfilled'?res[1].value:null;
+    var dashErr=res[1].status==='rejected'?(res[1].reason&&res[1].reason.message):null;
+
+    var pres=(dash&&dash.queryPresentations)||[];
+    var qids=new Set(queries.map(function(q){return q.id;}));
+    var tiles=queries.map(function(q){
+      var p=pres.find(function(p){return p.id===q.id;});
+      return {id:q.id,name:q.name,url:q.url,query:q.query,pres:p||null};
+    });
+    pres.filter(function(p){return !qids.has(p.id);}).forEach(function(p){
+      tiles.push({id:p.id,name:p.name,url:null,query:p.query,pres:p});
+    });
+    window._tiles=tiles;
+
+    var ff=(dash&&dash.filterOrder)||[];
+    var fc=(dash&&dash.filterConfig)||{};
+
+    var summary='<div class="info-grid" style="margin-bottom:16px;">'+
+      '<div class="info-cell"><div class="info-cell-label">Identifier</div><div class="info-cell-value mono">'+esc(identifier)+'</div></div>'+
+      '<div class="info-cell"><div class="info-cell-label">Name</div><div class="info-cell-value">'+esc((dash&&dash.name)||'—')+'</div></div>'+
+      '<div class="info-cell"><div class="info-cell-label">Model ID</div><div class="info-cell-value mono">'+esc((dash&&dash.modelId)||'—')+'</div></div>'+
+      '<div class="info-cell"><div class="info-cell-label">Tiles</div><div class="info-cell-value">'+tiles.length+'</div></div>'+
+      '<div class="info-cell"><div class="info-cell-label">Dashboard Filters</div><div class="info-cell-value">'+(ff.length||'—')+'</div></div>'+
+      '<div class="info-cell"><div class="info-cell-label">Refresh Interval</div><div class="info-cell-value">'+((dash&&dash.refreshInterval)?dash.refreshInterval+'s':'—')+'</div></div>'+
+      '</div>';
+
+    var filtersHtml='';
+    if (ff.length) {
+      filtersHtml='<div class="section-header"><span class="section-title">Dashboard Filters</span><span class="count-badge">'+ff.length+'</span></div>'+
+        '<table class="data-table" style="margin-bottom:20px;"><thead><tr><th>Field</th><th>Type</th><th>Default</th></tr></thead><tbody>'+
+        ff.map(function(f){var cfg=fc[f]||{};return '<tr><td class="mono">'+esc(f)+'</td><td>'+esc(cfg.type||'—')+'</td><td class="mono">'+esc(cfg.defaultValue||'—')+'</td></tr>';}).join('')+
+        '</tbody></table>';
     }
-  }, 80);
+
+    var tilesHtml=tiles.length?tiles.map(function(tile,i){
+      var q=tile.query||{},p=tile.pres,fields=q.fields||[],filters=q.filters||{},sorts=q.sorts||[];
+      var fc2=Object.keys(filters).length;
+      return '<div class="detail-panel" style="margin-bottom:12px;">'+
+        '<div class="detail-header" style="cursor:pointer;" onclick="toggleTile('+i+')">'+
+        '<div style="display:flex;align-items:center;gap:10px;flex:1;">'+
+        '<span style="font-family:var(--mono);font-size:10px;color:var(--text3);min-width:24px;">#'+(i+1)+'</span>'+
+        '<span class="detail-title">'+esc(tile.name||'Untitled Tile')+'</span>'+
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+
+        (p&&p.chartType?'<span class="badge blue">'+esc(p.chartType)+'</span>':'')+
+        (fields.length?'<span class="badge">'+fields.length+' field'+(fields.length!==1?'s':'')+'</span>':'')+
+        (fc2?'<span class="badge yellow">'+fc2+' filter'+(fc2!==1?'s':'')+'</span>':'')+
+        (q.table?'<span class="badge green">'+esc(q.table)+'</span>':'')+
+        '</div></div>'+
+        '<div style="display:flex;gap:6px;">'+
+        '<button class="copy-btn" onclick="event.stopPropagation();copyTile('+i+')">Copy Query</button>'+
+        '<button class="btn" onclick="event.stopPropagation();getSql('+i+')">Get SQL</button>'+
+        (tile.url?'<a href="'+esc(tile.url)+'" target="_blank" style="text-decoration:none;" onclick="event.stopPropagation()"><button class="btn">↗ Open</button></a>':'')+
+        '</div></div>'+
+        '<div id="tb-'+i+'" style="display:none;"><div class="detail-body">'+
+        (fields.length?'<div class="section-title" style="margin-bottom:8px;">Fields ('+fields.length+')</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">'+fields.map(function(f){return '<span class="badge blue">'+esc(f)+'</span>';}).join('')+'</div>':'')+
+        (fc2?'<div class="section-title" style="margin-bottom:8px;">Tile Filters ('+fc2+')</div><table class="data-table" style="margin-bottom:14px;"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody>'+Object.keys(filters).map(function(k){var v=filters[k];return '<tr><td class="mono">'+esc(k)+'</td><td class="mono">'+esc(typeof v==='object'?JSON.stringify(v):String(v))+'</td></tr>';}).join('')+'</tbody></table>':'')+
+        (sorts.length?'<div class="section-title" style="margin-bottom:8px;">Sorts</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">'+sorts.map(function(s){return '<span class="badge">'+esc(s.column_name)+(s.sort_descending?' ↓':' ↑')+'</span>';}).join('')+'</div>':'')+
+        (q.limit?'<div style="margin-bottom:14px;"><span class="section-title">Limit</span><span class="badge" style="margin-left:8px;">'+q.limit+' rows</span></div>':'')+
+        (p&&p.visualization?'<div class="section-title" style="margin-bottom:8px;">Visualization Config</div><div class="json-viewer" style="max-height:200px;margin-bottom:14px;">'+hi(p.visualization)+'</div>':'')+
+        '<div id="sql-'+i+'"></div>'+
+        '<div class="section-title" style="margin-bottom:8px;">Raw Query JSON</div><div class="json-viewer" style="max-height:300px;">'+hi(q)+'</div>'+
+        '</div></div></div>';
+    }).join(''):empty('No queries found in this document');
+
+    out.innerHTML=summary+
+      (dashErr?'<div class="error-box" style="margin-bottom:14px;">Dashboard config unavailable: '+esc(dashErr)+'</div>':'')+
+      filtersHtml+
+      '<div class="section-header"><span class="section-title">Tiles / Queries</span>'+
+      '<div style="display:flex;gap:8px;"><span class="count-badge">'+tiles.length+' tiles</span>'+
+      '<button class="copy-btn" onclick="copyAllTiles()">Copy All Queries</button></div></div>'+
+      tilesHtml;
+  } catch(e) { out.innerHTML=err(e); }
+}
+
+function toggleTile(i) {
+  var b=document.getElementById('tb-'+i); if(b) b.style.display=b.style.display==='none'?'block':'none';
+}
+
+function copyTile(i) {
+  var t=window._tiles&&window._tiles[i]; if(t&&t.query) navigator.clipboard.writeText(JSON.stringify(t.query,null,2));
+}
+
+function copyAllTiles() {
+  if (!window._tiles) return;
+  navigator.clipboard.writeText(JSON.stringify(window._tiles.map(function(t){return{name:t.name,id:t.id,query:t.query};}),null,2));
+}
+
+function copySql(i) {
+  var s=window._sql&&window._sql[i]; if(s) navigator.clipboard.writeText(s);
+}
+
+async function getSql(i) {
+  var tile=window._tiles&&window._tiles[i]; if(!tile||!tile.query) return;
+  var so=document.getElementById('sql-'+i),tb=document.getElementById('tb-'+i);
+  if(tb) tb.style.display='block';
+  so.innerHTML=spin('Generating SQL...');
+  try {
+    var data=await apiFetch('/api/v1/query/run',{method:'POST',body:JSON.stringify({query:tile.query,planOnly:true})});
+    var sql=(data.summary&&data.summary.sql)||(data.query&&data.query.sql)||JSON.stringify(data,null,2);
+    window._sql=window._sql||{}; window._sql[i]=typeof sql==='string'?sql:JSON.stringify(sql,null,2);
+    so.innerHTML='<div class="section-header" style="margin-top:4px;"><span class="section-title">Generated SQL</span><button class="copy-btn" onclick="copySql('+i+')">Copy SQL</button></div>'+
+      '<div class="yaml-viewer" style="max-height:400px;margin-bottom:14px;">'+esc(window._sql[i])+'</div>';
+  } catch(e) { so.innerHTML='<div class="error-box" style="margin-bottom:14px;">SQL generation failed: '+esc(e.message)+'</div>'; }
+}
+
+// EXPORT
+function renderExport(c) {
+  window._eDocs=state.documents||[];
+  var opts=window._eDocs.map(function(d,i){return '<option value="'+i+'">'+esc(d.name||'Untitled')+(d.identifier?' ('+esc(d.identifier)+')':'')+'</option>';}).join('');
+  c.innerHTML='<div style="max-width:680px;"><div class="detail-panel"><div class="detail-header"><span class="detail-title">Export Dashboard</span></div><div class="detail-body">'+
+    (!opts?'<p style="font-size:12px;color:var(--text3);margin-bottom:14px;">Load <a href="#" onclick="navigate(\'documents\')" style="color:var(--accent2)">Documents</a> first to pick from list.</p>':'')+
+    '<div class="form-group" style="margin-bottom:12px;"><label class="form-label">Dashboard Identifier</label><input class="input" id="eid" placeholder="Paste document identifier..." /></div>'+
+    (opts?'<div class="form-group" style="margin-bottom:14px;"><label class="form-label">Or pick from documents</label><select class="select" id="esel" onchange="eSelChange(this)"><option value="">— select —</option>'+opts+'</select></div>':'')+
+    '<button class="btn primary" onclick="runExport()">↗ Export</button></div></div><div id="eout" style="margin-top:16px;"></div></div>';
+}
+
+function eSelChange(sel) {
+  var idx=sel.value; if(!idx) return;
+  var d=window._eDocs[parseInt(idx)]; if(d&&d.identifier) document.getElementById('eid').value=d.identifier;
+}
+
+function goExport(id) {
+  navigate('export');
+  setTimeout(function(){
+    var el=document.getElementById('eid'); if(el) el.value=id;
+    var s=document.getElementById('esel');
+    if(s&&window._eDocs){var i=window._eDocs.findIndex(function(d){return d.identifier===id;});if(i>=0)s.value=String(i);}
+  },80);
 }
 
 async function runExport() {
-  const identifier = document.getElementById('export-doc-id')?.value?.trim();
-  if (!identifier) { alert('Please enter or select a document identifier first.'); return; }
-  const out = document.getElementById('export-output');
-  out.innerHTML = loading();
+  var id=document.getElementById('eid')&&document.getElementById('eid').value.trim();
+  if(!id){alert('Please enter or select a document identifier first.');return;}
+  var out=document.getElementById('eout');
+  out.innerHTML=spin();
   try {
-    const data = await apiFetch(`/api/unstable/documents/${identifier}/export`);
-    window._exportData = data;
-    window._exportTab = 'full';
-    const tabs = ['full','dashboard','workbookModel','document','fileUploads'].filter(k => k === 'full' || data[k] !== undefined);
-    out.innerHTML = `
-      <div class="section-header">
-        <span class="section-title">Export — ${esc(identifier)}</span>
-        <div style="display:flex;gap:8px;">
-          <button class="copy-btn" onclick="copyExport()">Copy JSON</button>
-          <button class="btn" onclick="downloadExport('${esc(identifier)}')">⬇ Download</button>
-        </div>
-      </div>
-      <div class="tabs" id="export-tabs">
-        ${tabs.map((t,i) => `<button class="tab ${i===0?'active':''}" onclick="switchExportTab('${t}',this)">${t}</button>`).join('')}
-      </div>
-      <div class="json-viewer" id="export-json">${syntaxHighlight(data)}</div>`;
-  } catch(e) { out.innerHTML = apiError(e); }
+    var data=await apiFetch('/api/unstable/documents/'+id+'/export');
+    window._eData=data; window._eTab='full';
+    var tkeys=['full','dashboard','workbookModel','document','fileUploads'].filter(function(k){return k==='full'||data[k]!==undefined;});
+    out.innerHTML='<div class="section-header"><span class="section-title">Export — '+esc(id)+'</span>'+
+      '<div style="display:flex;gap:8px;"><button class="copy-btn" onclick="copyExport()">Copy JSON</button><button class="btn" onclick="dlExport(\''+esc(id)+'\')">⬇ Download</button></div></div>'+
+      '<div class="tabs" id="etabs">'+tkeys.map(function(t,i){return '<button class="tab'+(i===0?' active':'')+'" onclick="switchExportTab(\''+t+'\',this)">'+t+'</button>';}).join('')+'</div>'+
+      '<div class="json-viewer" id="ejson">'+hi(data)+'</div>';
+  } catch(e) { out.innerHTML=err(e); }
 }
 
-function switchExportTab(tab, btn) {
-  document.querySelectorAll('#export-tabs .tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  window._exportTab = tab;
-  const content = tab === 'full' ? window._exportData : window._exportData?.[tab];
-  document.getElementById('export-json').innerHTML = syntaxHighlight(content);
+function switchExportTab(tab,btn) {
+  document.querySelectorAll('#etabs .tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active'); window._eTab=tab;
+  var c=tab==='full'?window._eData:(window._eData&&window._eData[tab]);
+  document.getElementById('ejson').innerHTML=hi(c);
 }
 
 function copyExport() {
-  const content = window._exportTab === 'full' ? window._exportData : window._exportData?.[window._exportTab];
-  navigator.clipboard.writeText(JSON.stringify(content, null, 2));
-  const btn = document.querySelector('#export-output .copy-btn');
-  if (btn) { btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy JSON', 1500); }
+  var c=window._eTab==='full'?window._eData:(window._eData&&window._eData[window._eTab]);
+  navigator.clipboard.writeText(JSON.stringify(c,null,2));
+  var b=document.querySelector('#eout .copy-btn'); if(b){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy JSON';},1500);}
 }
 
-function downloadExport(identifier) {
-  const blob = new Blob([JSON.stringify(window._exportData, null, 2)], {type: 'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = `omni-export-${identifier}.json`; a.click();
+function dlExport(id) {
+  var blob=new Blob([JSON.stringify(window._eData,null,2)],{type:'application/json'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='omni-export-'+id+'.json'; a.click();
 }
 
-// ─── QUERY ────────────────────────────────────────────────────────────────────
+// QUERY
 function renderQuery(c) {
-  const modelId = state.selectedModel?.id || state.models?.[0]?.id || 'YOUR_MODEL_ID';
-  const example = JSON.stringify({
-    modelId,
-    table: "project_job_actuals",
-    fields: ["project_job_actuals.project_name", "project_job_actuals.total_costs_to_date"],
-    limit: 10,
-    sorts: [{ column_name: "project_job_actuals.total_costs_to_date", sort_descending: true }]
-  }, null, 2);
+  var mid=(state.selectedModel&&state.selectedModel.id)||(state.models&&state.models[0]&&state.models[0].id)||'YOUR_MODEL_ID';
+  var ex=JSON.stringify({modelId:mid,table:'project_job_actuals',fields:['project_job_actuals.project_name','project_job_actuals.total_costs_to_date'],limit:10,sorts:[{column_name:'project_job_actuals.total_costs_to_date',sort_descending:true}]},null,2);
+  c.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;height:calc(100vh - 120px);">'+
+    '<div style="display:flex;flex-direction:column;gap:12px;">'+
+    '<div class="form-group"><label class="form-label">Result Format</label><select class="select" id="qfmt"><option value="json">JSON</option><option value="csv">CSV</option></select></div>'+
+    '<div class="form-group" style="flex:1;"><label class="form-label">Query JSON</label><textarea class="input" id="qbody" style="flex:1;resize:none;height:100%;min-height:300px;font-size:11px;line-height:1.6">'+esc(ex)+'</textarea></div>'+
 
-  c.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;height:calc(100vh - 120px);">
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div class="form-group">
-          <label class="form-label">Result Format</label>
-          <select class="select" id="query-format">
-            <option value="json">JSON</option>
-            <option value="csv">CSV</option>
-          </select>
-        </div>
-        <div class="form-group" style="flex:1;">
-          <label class="form-label">Query JSON</label>
-          <textarea class="input" id="query-body" style="flex:1;resize:none;height:100%;min-height:300px;font-size:11px;line-height:1.6">${esc(example)}</textarea>
-        </div>
-        <button class="btn primary" onclick="runQuery()" style="width:100%">▷ Run Query</button>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;overflow:hidden;">
-        <div class="section-header"><span class="section-title">Results</span></div>
-        <div id="query-output" style="flex:1;overflow:auto;">
-          <div class="state-box"><div class="state-icon">◷</div><div>Run a query to see results</div></div>
-        </div>
-      </div>
-    </div>`;
+```
+'<button class="btn primary" onclick="runQuery()" style="width:100%">▷ Run Query</button></div>'+
+'<div style="display:flex;flex-direction:column;gap:8px;overflow:hidden;"><div class="section-header"><span class="section-title">Results</span></div>'+
+'<div id="qout" style="flex:1;overflow:auto;"><div class="state-box"><div class="state-icon">◷</div><div>Run a query to see results</div></div></div></div></div>';
+```
+
 }
 
 async function runQuery() {
-  const out = document.getElementById('query-output');
-  const bodyText = document.getElementById('query-body').value;
-  const format = document.getElementById('query-format').value;
-  out.innerHTML = loading();
-  try {
-    const queryObj = JSON.parse(bodyText);
-    const data = await apiFetch('/api/v1/query/run', { method: 'POST', body: JSON.stringify({ query: queryObj, resultType: format }) });
-    if (format === 'csv' && data.result) {
-      try { out.innerHTML = `<pre class="yaml-viewer">${esc(atob(data.result))}</pre>`; }
-      catch { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`; }
-    } else if (format === 'json' && data.result) {
-      try { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(JSON.parse(atob(data.result)))}</div>`; }
-      catch { out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`; }
-    } else {
-      out.innerHTML = `<div class="json-viewer">${syntaxHighlight(data)}</div>`;
-    }
-  } catch(e) { out.innerHTML = apiError(e); }
+var out=document.getElementById(‘qout’),bt=document.getElementById(‘qbody’).value,fmt=document.getElementById(‘qfmt’).value;
+out.innerHTML=spin();
+try {
+var q=JSON.parse(bt),data=await apiFetch(’/api/v1/query/run’,{method:‘POST’,body:JSON.stringify({query:q,resultType:fmt})});
+if(fmt===‘csv’&&data.result){try{out.innerHTML=’<pre class="yaml-viewer">’+esc(atob(data.result))+’</pre>’;}catch(e2){out.innerHTML=’<div class="json-viewer">’+hi(data)+’</div>’;}}
+else if(fmt===‘json’&&data.result){try{out.innerHTML=’<div class="json-viewer">’+hi(JSON.parse(atob(data.result)))+’</div>’;}catch(e2){out.innerHTML=’<div class="json-viewer">’+hi(data)+’</div>’;}}
+else{out.innerHTML=’<div class="json-viewer">’+hi(data)+’</div>’;}
+} catch(e) { out.innerHTML=err(e); }
 }
 
-// ─── CONNECTIONS ──────────────────────────────────────────────────────────────
+// CONNECTIONS
 async function renderConnections(c) {
-  c.innerHTML = loading();
-  try {
-    const data = await apiFetch('/api/v1/connections?pageSize=50');
-    const conns = data.records || [];
-    if (!conns.length) { c.innerHTML = empty('No connections found'); return; }
-    c.innerHTML = `
-      <div class="section-header">
-        <span class="section-title">Connections</span>
-        <span class="count-badge">${conns.length}</span>
-      </div>
-      <div class="card-grid">
-        ${conns.map(conn => `
-          <div class="card">
-            <div class="card-title">${esc(conn.name || 'Connection')}</div>
-            <div class="card-sub">${conn.id}</div>
-            <div class="card-meta">
-              ${conn.type ? `<span class="badge blue">${esc(conn.type)}</span>` : ''}
-              ${conn.dialect ? `<span class="badge">${esc(conn.dialect)}</span>` : ''}
-            </div>
-          </div>`).join('')}
-      </div>`;
-  } catch(e) { c.innerHTML = apiError(e); }
+c.innerHTML=spin();
+try {
+var data=await apiFetch(’/api/v1/connections?pageSize=50’);
+var conns=data.records||[];
+if(!conns.length){c.innerHTML=empty(‘No connections found’);return;}
+c.innerHTML=’<div class="section-header"><span class="section-title">Connections</span><span class="count-badge">’+conns.length+’</span></div><div class="card-grid">’+
+conns.map(function(conn){return ‘<div class="card"><div class="card-title">’+esc(conn.name||‘Connection’)+’</div><div class="card-sub">’+conn.id+’</div><div class="card-meta">’+(conn.type?’<span class="badge blue">’+esc(conn.type)+’</span>’:’’)+(conn.dialect?’<span class="badge">’+esc(conn.dialect)+’</span>’:’’)+’</div></div>’;}).join(’’)+’</div>’;
+} catch(e) { c.innerHTML=err(e); }
 }
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────────
-function loading(msg) {
-  return `<div class="state-box"><div class="spinner"></div><div>${msg || 'Loading...'}</div></div>`;
-}
+// HELPERS
+function spin(msg) { return ‘<div class="state-box"><div class="spinner"></div><div>’+(msg||‘Loading…’)+’</div></div>’; }
+function empty(msg) { return ‘<div class="state-box"><div class="state-icon">○</div><div>’+msg+’</div></div>’; }
+function esc(s) { return String(s==null?’’:s).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).replace(/”/g,’"’); }
+function err(e) { return ‘<div class="error-box">⚠ ‘+esc(e.message||String(e))+’</div>’; }
+function copyTopicJson(i) { var t=window._topics&&window._topics[i]; if(t) navigator.clipboard.writeText(JSON.stringify(t.data,null,2)); }
 
-function empty(msg) {
-  return `<div class="state-box"><div class="state-icon">○</div><div>${msg}</div></div>`;
-}
-
-function esc(str) {
-  return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function apiError(e) {
-  return `<div class="error-box">⚠ ${esc(e.message || String(e))}</div>`;
-}
-
-function syntaxHighlight(json) {
-  const str = typeof json === 'string' ? json : JSON.stringify(json, null, 2);
-  return esc(str).replace(
-    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-    match => {
-      let cls = 'num';
-      if (/^"/.test(match)) cls = /:$/.test(match) ? 'key' : 'str';
-      else if (/true|false/.test(match)) cls = 'bool';
-      else if (/null/.test(match)) cls = 'null';
-      return `<span class="${cls}">${match}</span>`;
-    }
-  );
+function hi(json) {
+var s=typeof json===‘string’?json:JSON.stringify(json,null,2);
+return esc(s).replace(/(”(\u[a-zA-Z0-9]{4}|\[^u]|[^\”])*”(\s*:)?|\b(true|false|null)\b|-?\d+(?:.\d*)?(?:[eE][+-]?\d+)?)/g,function(m){
+var c=‘num’;
+if(/^”/.test(m)) c=/:$/.test(m)?‘key’:‘str’;
+else if(/true|false/.test(m)) c=‘bool’;
+else if(/null/.test(m)) c=‘null’;
+return ‘<span class="'+c+'">’+m+’</span>’;
+});
 }
 </script>
+
 </body>
 </html>
