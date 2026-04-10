@@ -660,6 +660,7 @@ async function doLogin() {
   const workerUrl = document.getElementById('worker-url').value.trim().replace(/\/$/, '');
   const secret = document.getElementById('app-secret').value.trim();
   const errEl = document.getElementById('login-error');
+  const btn = document.querySelector('.login-btn');
   errEl.style.display = 'none';
 
   if (!workerUrl || !secret) {
@@ -668,33 +669,44 @@ async function doLogin() {
     return;
   }
 
+  btn.textContent = 'Connecting...';
+  btn.disabled = true;
+
   // Test the connection
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(workerUrl + '/api/v1/models?pageSize=1', {
       headers: { 'X-App-Secret': secret },
-      signal: AbortSignal.timeout(8000)
+      signal: controller.signal
     });
+    clearTimeout(timer);
     if (res.status === 401) {
       errEl.textContent = '⚠ Wrong App Secret — check your Cloudflare Worker environment variable.';
       errEl.style.display = 'block';
+      btn.textContent = 'Connect →'; btn.disabled = false;
       return;
     }
     if (!res.ok && res.status !== 400) {
       errEl.textContent = `⚠ Worker responded with ${res.status}. Check the Worker URL.`;
       errEl.style.display = 'block';
+      btn.textContent = 'Connect →'; btn.disabled = false;
       return;
     }
   } catch(e) {
     errEl.textContent = `⚠ Could not reach Worker: ${e.message}`;
     errEl.style.display = 'block';
+    btn.textContent = 'Connect →'; btn.disabled = false;
     return;
   }
 
   WORKER_URL = workerUrl;
   APP_SECRET = secret;
 
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app-shell').style.display = 'flex';
+  const loginScreen = document.getElementById('login-screen');
+  const appShell = document.getElementById('app-shell');
+  loginScreen.style.cssText = 'display:none';
+  appShell.style.cssText = 'display:flex;flex-direction:column;height:100vh;';
   document.getElementById('worker-url-display').textContent = workerUrl.replace('https://', '');
 
   await renderModels(document.getElementById('content'));
