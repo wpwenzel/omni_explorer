@@ -1008,7 +1008,7 @@ function showTopicDetail(i) {
     <div class="detail-panel">
       <div class="detail-header">
         <span class="detail-title">${esc(d.label || d.name || t.name)}</span>
-        <button class="copy-btn" onclick="navigator.clipboard.writeText(JSON.stringify(window._topics[${i}].data,null,2))">Copy JSON</button>
+        <button class="copy-btn" onclick="copyTopicJson(${i})">Copy JSON</button>
       </div>
       <div class="detail-body">
         <div class="info-grid" style="margin-bottom:16px;">
@@ -1533,6 +1533,11 @@ return `<div class="state-box"><div class="state-icon">○</div><div>${msg}</div
 
 function esc(str) {
 return String(str ?? ‘’).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).replace(/”/g,’"’);
+}
+
+function copyTopicJson(i) {
+const t = window._topics?.[i];
+if (t) navigator.clipboard.writeText(JSON.stringify(t.data, null, 2));
 }
 
 function copySql(i) {
