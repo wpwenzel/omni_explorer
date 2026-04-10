@@ -551,7 +551,7 @@ border: 1px solid var(–border);
 
 <!-- ── LOGIN SCREEN ─────────────────────────────────────────────────────────── -->
 
-<div id="login-screen">
+<div id="login-screen" style="display:flex;">
   <div class="login-box">
     <div class="login-header">
       <div class="login-logo">
@@ -582,7 +582,7 @@ border: 1px solid var(–border);
 
 <!-- ── APP SHELL ────────────────────────────────────────────────────────────── -->
 
-<div id="app-shell">
+<div id="app-shell" style="display:none;">
   <header>
     <div class="logo">
       <div class="logo-dot"></div>
@@ -657,11 +657,13 @@ let currentView = 'models';
 let state = { models: null, selectedModel: null, documents: null };
 
 async function doLogin() {
+  console.log('doLogin called');
   const workerUrl = document.getElementById('worker-url').value.trim().replace(/\/$/, '');
   const secret = document.getElementById('app-secret').value.trim();
   const errEl = document.getElementById('login-error');
   const btn = document.querySelector('.login-btn');
   errEl.style.display = 'none';
+  console.log('workerUrl:', workerUrl, 'secret length:', secret.length);
 
   if (!workerUrl || !secret) {
     errEl.textContent = 'Both fields are required.';
@@ -671,6 +673,7 @@ async function doLogin() {
 
   btn.textContent = 'Connecting...';
   btn.disabled = true;
+  console.log('Fetching worker...');
 
   // Test the connection
   try {
