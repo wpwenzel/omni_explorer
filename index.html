@@ -1325,9 +1325,12 @@ async function getSql(i) {
     sqlOut.innerHTML = `
       <div class="section-header" style="margin-top:4px;">
         <span class="section-title">Generated SQL</span>
-        <button class="copy-btn" onclick="navigator.clipboard.writeText(${JSON.stringify(typeof sql === 'string' ? sql : JSON.stringify(sql, null, 2))})">Copy SQL</button>
+        <button class="copy-btn" onclick="copySql(${i})">Copy SQL</button>
       </div>
       <div class="yaml-viewer" style="max-height:400px;margin-bottom:14px;">${esc(typeof sql === 'string' ? sql : JSON.stringify(sql, null, 2))}</div>`;
+
+    window._lastSql = window._lastSql || {};
+    window._lastSql[i] = typeof sql === 'string' ? sql : JSON.stringify(sql, null, 2);
   } catch(e) {
     sqlOut.innerHTML = `<div class="error-box" style="margin-bottom:14px;">⚠ SQL generation failed: ${esc(e.message)}</div>`;
   }
@@ -1518,6 +1521,11 @@ return `<div class="state-box"><div class="state-icon">○</div><div>${msg}</div
 
 function esc(str) {
 return String(str ?? ‘’).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).replace(/”/g,’"’);
+}
+
+function copySql(i) {
+const sql = window._lastSql?.[i];
+if (sql) navigator.clipboard.writeText(sql);
 }
 
 function apiError(e) {
